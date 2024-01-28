@@ -7,7 +7,10 @@
   "arrowParens": "always",
   "tailwindConfig": "./tailwind.config.js",
   "tailwindFunctions": ["clsx", "cva", "cn"],
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
   "importOrder": [
     "<THIRD_PARTY_MODULES>",
     "^@/components/(.*)$",
