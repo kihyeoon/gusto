@@ -20,6 +20,8 @@ const messages: OpenAI.ChatCompletionMessageParam[] = [
   },
 ];
 
+export const runtime = "edge";
+
 export async function GET(_: NextRequest, { params: { script } }: Context) {
   const maxRetries = 3;
   let retries = 0;
