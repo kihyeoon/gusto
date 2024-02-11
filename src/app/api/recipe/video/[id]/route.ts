@@ -12,6 +12,8 @@ interface script {
   text: string;
 }
 
+export const runtime = "edge";
+
 export async function GET(_: NextRequest, { params: { id } }: Context) {
   const YTtranscript: script[] = await YoutubeTranscript.fetchTranscript(
     id,
