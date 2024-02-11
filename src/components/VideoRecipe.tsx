@@ -5,24 +5,17 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface script {
-  offset: number;
-  text: string;
-}
-
 export default function VideoRecipe() {
   const [videoId, setVideoId] = useState<string>("");
-  const [recipe, setRecipe] = useState<string>("");
+  const [recipe, setRecipe] = useState<string[]>([]);
 
   const handleClick = async () => {
-    const script = await fetch(`/api/recipe/video/${videoId}`).then((res) =>
-      res.json(),
-    );
-
-    const recipe = await fetch(
-      `/api/recipe/ai/${script.map((s: script) => s.text).join("\n")}`,
-    ).then((res) => res.json());
-
+    const recipe = await fetch(`/api/recipe/video/${videoId}`)
+      .then((res) => res.json())
+      .then((steps: string) =>
+        steps.split("\n").filter((line) => line.trim() !== ""),
+      );
+    console.log(recipe);
     setRecipe(recipe);
   };
 
@@ -37,7 +30,14 @@ export default function VideoRecipe() {
         />
         <Button onClick={handleClick}>Submit</Button>
       </div>
-      {recipe && <p>{recipe}</p>}
+      <ul>
+        {recipe &&
+          recipe.map((step, index) => (
+            <div key={index} className="text-lg">
+              {step}
+            </div>
+          ))}
+      </ul>
     </div>
   );
 }
