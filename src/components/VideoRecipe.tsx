@@ -4,6 +4,8 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 import RecipeSkeleton from "@/components/RecipeSkeleton";
+import RecipeEdit from "@/components/recipe/RecipeEdit";
+import RecipeView from "@/components/recipe/RecipeView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -20,8 +22,9 @@ export interface Recipe {
 
 export default function VideoRecipe() {
   const [url, setUrl] = useState("");
-  const [recipe, setRecipe] = useState<Recipe>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleClick = async () => {
     setLoading(true);
@@ -66,54 +69,51 @@ export default function VideoRecipe() {
 
   return (
     <div className="flex w-full flex-col gap-7">
-      <div className="flex w-full items-center justify-center gap-3">
-        <Input
-          className="w-full"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter a YouTube video URL"
-        />
-        <Button onClick={handleClick} disabled={loading}>
-          {loading ? (
-            <>
-              <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              please wait
-            </>
-          ) : (
-            "Create Recipe"
-          )}
-        </Button>
-      </div>
-      {loading && <RecipeSkeleton />}
-      {isReady && (
-        <div className="flex flex-col gap-5">
-          <h2 className="text-2xl font-bold">{recipe.title}</h2>
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl font-semibold">재료</h3>
-            <ul className="flex flex-col gap-2">
-              {recipe.ingredients.map((ingredient, i) => (
-                <li key={i}>{ingredient}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl font-semibold">요리 순서</h3>
-            <ul className="flex flex-col gap-2">
-              {recipe.body.map((step, i) => (
-                <li key={i}>{`${i + 1}. ${step}`}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl font-semibold">Tips</h3>
-            <ul className="flex flex-col gap-2">
-              {recipe.tips.map((tip, i) => (
-                <li key={i}>{tip}</li>
-              ))}
-            </ul>
-          </div>
+      {isReady ? (
+        isEditMode ? (
+          <Button
+            onClick={() => {
+              setIsEditMode(false);
+            }}
+          >
+            View
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              setIsEditMode(true);
+            }}
+          >
+            Edit
+          </Button>
+        )
+      ) : (
+        <div className="flex w-full items-center justify-center gap-3">
+          <Input
+            className="w-full"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter a YouTube video URL"
+          />
+          <Button onClick={handleClick} disabled={loading}>
+            {loading ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                please wait
+              </>
+            ) : (
+              "Create Recipe"
+            )}
+          </Button>
         </div>
       )}
+      {loading && <RecipeSkeleton />}
+      {isReady &&
+        (isEditMode ? (
+          <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
+        ) : (
+          <RecipeView recipe={recipe} />
+        ))}
     </div>
   );
 }
