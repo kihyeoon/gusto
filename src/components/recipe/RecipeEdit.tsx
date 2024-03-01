@@ -1,5 +1,6 @@
-import { Recipe } from "@/components/VideoRecipe";
 import { Input } from "@/components/ui/input";
+
+import { Recipe } from "@/hooks/useRecipe";
 
 interface Props {
   recipe: Recipe;

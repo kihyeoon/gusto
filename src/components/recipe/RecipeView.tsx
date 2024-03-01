@@ -1,6 +1,6 @@
 "use client";
 
-import { Recipe } from "@/components/VideoRecipe";
+import { Recipe } from "@/hooks/useRecipe";
 
 interface Props {
   recipe: Recipe;
@@ -26,14 +26,16 @@ export default function RecipeView({ recipe }: Props) {
           ))}
         </ul>
       </div>
-      <div className="flex flex-col gap-3">
-        <h3 className="text-xl font-semibold">Tips</h3>
-        <ul className="flex flex-col gap-2">
-          {recipe.tips.map((tip, i) => (
-            <li key={i}>{tip}</li>
-          ))}
-        </ul>
-      </div>
+      {recipe.tips.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <h3 className="text-xl font-semibold">Tips</h3>
+          <ul className="flex flex-col gap-2">
+            {recipe.tips.map((tip, i) => (
+              <li key={i}>{tip}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
