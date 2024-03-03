@@ -5,16 +5,21 @@ import { useState } from "react";
 
 import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
 import RecipeView from "@/components/recipe/RecipeView";
+import RecipeList from "@/components/recipes/RecipeList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import useRecipe from "@/hooks/useRecipe";
+import useRecipes from "@/hooks/useRecipes";
 
 export default function Recipes() {
   const [url, setUrl] = useState("");
   const { recipe, setRecipe, loading, createRecipe } = useRecipe();
+  const { recipes, loading: listLoading } = useRecipes();
 
-  const isReady = !loading && recipe;
+  const isRecipeReady = !loading && recipe;
+  const isListReady = !listLoading && recipes;
+  const showList = !(recipe || loading);
 
   return (
     <div className="flex w-full flex-col gap-7">
@@ -36,8 +41,18 @@ export default function Recipes() {
           )}
         </Button>
       </div>
-      {loading && <RecipeSkeleton />}
-      {isReady && <RecipeView recipe={recipe} />}
+      {showList ? (
+        isListReady ? (
+          <RecipeList recipes={recipes} />
+        ) : (
+          <RecipeSkeleton />
+        )
+      ) : (
+        <>
+          {loading && <RecipeSkeleton />}
+          {isRecipeReady && <RecipeView recipe={recipe} />}
+        </>
+      )}
     </div>
   );
 }

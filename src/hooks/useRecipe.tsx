@@ -1,15 +1,9 @@
+import { Recipe } from "@/models/recipe";
 import { useState } from "react";
 
-import { type Script } from "@/app/api/recipe/script/route";
+import { type Script } from "@/app/api/recipes/script/route";
 
 import { getQueryParam } from "@/lib/utils";
-
-export interface Recipe {
-  title: string;
-  ingredients: string[];
-  body: string[];
-  tips: string[];
-}
 
 export default function useRecipe() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -19,10 +13,10 @@ export default function useRecipe() {
     setLoading(true);
 
     const script = await fetch(
-      `/api/recipe/script?videoId=${getQueryParam(url, "v")}`,
+      `/api/recipes/script?videoId=${getQueryParam(url, "v")}`,
     ).then((res) => res.json());
 
-    const recipe = await fetch(`/api/recipe/ai`, {
+    const recipe = await fetch(`/api/recipes/ai`, {
       method: "POST",
       body: JSON.stringify({
         script: script.map((s: Script) => s.text).join("\n"),
