@@ -14,12 +14,17 @@ export default {
       type: 'text',
     },
     {
-      name: 'mainImage',
-      title: 'Main Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+        },
+      ],
     },
     {
       name: 'ingredients',
@@ -36,14 +41,14 @@ export default {
               to: [{type: 'ingredient'}],
             },
             {
-              name: 'unit',
-              title: 'Unit',
+              name: 'amount',
+              title: 'Amount',
               type: 'string',
             },
             {
-              name: 'amount',
-              title: 'Amount',
-              type: 'number',
+              name: 'notes',
+              title: 'Notes',
+              type: 'string',
             },
           ],
           preview: {
@@ -53,9 +58,9 @@ export default {
               amount: 'amount',
             },
             prepare(selection) {
-              const {name, unit, amount} = selection
+              const {name, amount = ''} = selection
               return {
-                title: `${name} ${amount} ${unit}`,
+                title: `${name} ${amount}`,
               }
             },
           },
@@ -76,22 +81,28 @@ export default {
               type: 'text',
             },
             {
-              name: 'stepImage',
-              title: 'Step Image',
-              type: 'image',
-              options: {
-                hotspot: true,
-              },
+              name: 'stepImages',
+              title: 'Step Images',
+              type: 'array',
+              of: [
+                {
+                  type: 'image',
+                  options: {
+                    hotspot: true,
+                  },
+                },
+              ],
             },
           ],
         },
       ],
     },
     {
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{type: 'category'}],
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'tag'}}],
+      validation: (Rule) => Rule.unique(),
     },
     {
       name: 'tips',
