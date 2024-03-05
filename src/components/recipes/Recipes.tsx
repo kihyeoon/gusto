@@ -9,13 +9,11 @@ import RecipeList from "@/components/recipes/RecipeList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import useRecipe from "@/hooks/useRecipe";
 import useRecipes from "@/hooks/useRecipes";
 
 export default function Recipes() {
   const [url, setUrl] = useState("");
-  const { recipe, setRecipe, loading, createRecipe } = useRecipe();
-  const { recipes, loading: listLoading } = useRecipes();
+  const { recipes, listLoading, recipe, loading, createRecipe } = useRecipes();
 
   const isRecipeReady = !loading && recipe;
   const isListReady = !listLoading && recipes;

@@ -9,6 +9,11 @@ export interface Recipe {
   createdAt: Date;
 }
 
+export type RecipePreview = Pick<
+  Recipe,
+  "id" | "title" | "description" | "tags"
+>;
+
 export interface Ingredient {
   name: string;
   amount: string | null;
