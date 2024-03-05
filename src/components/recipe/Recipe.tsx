@@ -4,19 +4,13 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useState } from "react";
 
-import RecipeEdit from "@/components/recipe/RecipeEdit";
-import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
 import RecipeView from "@/components/recipe/RecipeView";
 import { Button } from "@/components/ui/button";
 
-import useRecipe from "@/hooks/useRecipe";
+import { Recipe } from "@/models/recipe";
 
-export default function Recipe() {
+export default function Recipe({recipe}: {recipe: Recipe}) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const { recipe, setRecipe, loading, createRecipe } = useRecipe();
-  // TODO: 서버에서 레시피를 가져오는 로직을 추가합니다.
-
-  const isReady = !loading && recipe;
 
   return (
     <div className="flex w-full flex-col gap-7">
@@ -44,13 +38,12 @@ export default function Recipe() {
           </Button>
         )}
       </div>
-      {loading && <RecipeSkeleton />}
-      {isReady &&
-        (isEditMode ? (
-          <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
+        {isEditMode ? (
+          // <RecipeEdit recipe={recipe} setRecipe={setRecipe} /> 
+          null
         ) : (
           <RecipeView recipe={recipe} />
-        ))}
+        )}
     </div>
   );
 }
