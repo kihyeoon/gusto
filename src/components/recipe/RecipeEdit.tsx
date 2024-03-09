@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
+import { Recipe } from "@/models/recipe";
 
-import { Recipe } from "@/hooks/useRecipe";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   recipe: Recipe;
@@ -11,7 +11,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
   return (
     // edit mode
     <div className="flex flex-col gap-5">
-      <Input
+      {/* <Input
         className="text-2xl font-bold"
         value={recipe.title}
         onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
@@ -19,10 +19,10 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
-          {recipe.ingredients.map((ingredient, i) => (
+          {recipe.ingredients.map(({ name, amount }, i) => (
             <li key={i}>
               <Input
-                value={ingredient}
+                value={name}
                 onChange={(e) => {
                   const newIngredients = [...recipe.ingredients];
                   newIngredients[i] = e.target.value;
@@ -66,7 +66,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

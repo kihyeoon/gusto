@@ -9,6 +9,14 @@ export interface Recipe {
   createdAt: Date;
 }
 
+export interface RecipeFromAI {
+  title: string;
+  description: string | null;
+  ingredients: Ingredient[];
+  steps: Step[];
+  tips: string[] | null;
+}
+
 export type RecipePreview = Pick<
   Recipe,
   "id" | "title" | "description" | "tags"
