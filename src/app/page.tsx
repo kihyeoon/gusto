@@ -1,11 +1,9 @@
-import Chat from "@/components/Chat";
-import VideoRecipe from "@/components/VideoRecipe";
+import Recipes from "@/components/recipes/Recipes";
 
-export default async function Home() {
+export default async function HomePage() {
   return (
-    <main className="mx-auto flex max-w-sm flex-col items-center justify-between p-4">
-      <VideoRecipe />
-      {/* <Chat /> */}
-    </main>
+    <>
+      <Recipes />
+    </>
   );
 }

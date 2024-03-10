@@ -23,11 +23,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen font-sans antialiased",
-          fontSans.variable
+          "min-h-screen bg-neutral-100 font-sans antialiased",
+          fontSans.variable,
         )}
       >
-        {children}
+        <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center justify-between rounded-lg bg-white p-4">
+          {children}
+        </main>
         <Analytics />
         <SpeedInsights />
       </body>
