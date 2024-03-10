@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { getAllRecipes } from "@/service/recipe";
+import { getRecipesOf } from "@/service/recipe";
+
+import { withSessionUser } from "@/lib/session";
 
 export async function GET() {
-  const recipes = await getAllRecipes();
+  return withSessionUser(async (user) => {
+    const recipes = await getRecipesOf(user.email);
 
-  return NextResponse.json(recipes);
+    return NextResponse.json(recipes);
+  });
 }

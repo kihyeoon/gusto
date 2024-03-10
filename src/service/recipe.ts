@@ -38,6 +38,16 @@ export async function getAllRecipes() {
   );
 }
 
+export async function getRecipesOf(email: string) {
+  return client.fetch<Recipe>(
+    groq`
+      *[_type == "recipe" && author->email == "${email}"] {${recipePreviewProjection}}
+    `,
+    { email },
+    { cache: "no-store" },
+  );
+}
+
 export async function getRecipeById(id: string) {
   return client.fetch<Recipe>(
     groq`
