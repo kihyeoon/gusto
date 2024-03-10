@@ -27,6 +27,11 @@ export default {
       ],
     },
     {
+      name: 'url',
+      title: 'URL',
+      type: 'url',
+    },
+    {
       name: 'ingredients',
       title: 'Ingredients',
       type: 'array',

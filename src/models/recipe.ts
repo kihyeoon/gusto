@@ -2,9 +2,10 @@ export interface Recipe {
   id: string;
   title: string;
   description: string | null;
+  url: string | null;
   ingredients: Ingredient[];
   steps: Step[];
-  tips: string[] | null;
+  tips: string[];
   tags: string[];
   createdAt: Date;
 }

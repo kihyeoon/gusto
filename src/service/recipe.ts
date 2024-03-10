@@ -17,7 +17,7 @@ const recipeProjection = groq`
     "description": stepDescription,
   },
   "tags": tags[]->title,
-  "tips": tips[]
+  "tips": tips[],  
 `;
 
 const recipePreviewProjection = groq`
@@ -45,7 +45,7 @@ export async function getRecipeById(id: string): Promise<Recipe> {
   );
 }
 
-export async function createRecipe(recipe: RecipeFromAI) {
+export async function createRecipe(recipe: RecipeFromAI, url: string) {
   const ingredients = recipe.ingredients;
 
   // 1. 재료 데이터 생성 (중복 체크)
@@ -81,6 +81,7 @@ export async function createRecipe(recipe: RecipeFromAI) {
       stepDescription: step.description,
     })),
     tags: [],
+    url,
   };
 
   // 3. Sanity에 레시피 정보 저장

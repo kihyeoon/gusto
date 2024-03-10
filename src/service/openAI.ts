@@ -22,7 +22,7 @@ export class OpenAIService {
           description: string | null;
           ingredients: Ingredient[];
           steps: Step[];
-          tips: string[] | null;
+          tips: string[];
         }
         export interface Ingredient {
           name: string;

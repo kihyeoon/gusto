@@ -8,8 +8,13 @@ import { getRecipeSample } from "@/app/api/recipes/ai/sample";
 
 export const runtime = "edge";
 
+interface Request {
+  script: string;
+  url: string;
+}
+
 export async function POST(req: NextRequest) {
-  const { script } = await req.json();
+  const { script, url }: Request = await req.json();
   console.log(script);
 
   try {
@@ -24,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     // const recipeFromAI: RecipeFromAI = await getRecipeSample();
 
-    const createdRecipe = await createRecipe(recipeFromAI);
+    const createdRecipe = await createRecipe(recipeFromAI, url);
     console.log(createdRecipe);
 
     return NextResponse.json(createdRecipe);

@@ -25,6 +25,7 @@ export default function useRecipes() {
         method: "POST",
         body: JSON.stringify({
           script: script.map((s: Script) => s.text).join("\n"),
+          url,
         }),
       }).then((res) => res.json());
 
