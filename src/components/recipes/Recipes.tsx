@@ -1,7 +1,8 @@
 "use client";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
 import RecipeView from "@/components/recipe/RecipeView";
@@ -14,6 +15,7 @@ import useRecipes from "@/hooks/useRecipes";
 export default function Recipes() {
   const [url, setUrl] = useState("");
   const { recipes, listLoading, recipe, loading, createRecipe } = useRecipes();
+  const { data: session } = useSession();
 
   const isRecipeReady = !loading && recipe;
   const isListReady = !listLoading && recipes;
@@ -21,6 +23,11 @@ export default function Recipes() {
 
   return (
     <div className="flex w-full flex-col gap-7">
+      {session ? (
+        <Button onClick={() => signOut()}>로그아웃</Button>
+      ) : (
+        <Button onClick={() => signIn()}>로그인</Button>
+      )}
       <div className="flex w-full items-center justify-center gap-3">
         <Input
           className="w-full"
