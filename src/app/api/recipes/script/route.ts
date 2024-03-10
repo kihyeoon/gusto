@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   const videoId = req.nextUrl.searchParams.get("videoId") || "";
   const YTtranscript: Script[] = await YoutubeTranscript.fetchTranscript(
     videoId,
+    { lang: "ko" },
   )
     .then((res) => {
       return res.map(({ text, offset }) => ({

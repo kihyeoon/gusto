@@ -27,21 +27,24 @@ const recipePreviewProjection = groq`
   "tags": tags[]->title,
 `;
 
-export async function getAllRecipes(): Promise<Recipe[]> {
-  return client.fetch(
+export async function getAllRecipes() {
+  return client.fetch<Recipe[]>(
     groq`
       *[_type == "recipe"] 
       | order(_createdAt desc) {${recipePreviewProjection}}
       `,
+    {},
+    { cache: "no-store" },
   );
 }
 
-export async function getRecipeById(id: string): Promise<Recipe> {
-  return client.fetch(
+export async function getRecipeById(id: string) {
+  return client.fetch<Recipe>(
     groq`
       *[_type == "recipe" && _id == "${id}"][0] {${recipeProjection}}
     `,
     { id },
+    { cache: "no-store" },
   );
 }
 

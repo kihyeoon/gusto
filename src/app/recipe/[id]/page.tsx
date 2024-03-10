@@ -11,10 +11,8 @@ interface Props {
   };
 }
 
-const getUser = cache(async (id: string) => getRecipeById(id));
-
 export default async function RecipePage({ params: { id } }: Props) {
-  const recipe = await getUser(id);
+  const recipe = await getRecipeById(id);
 
   if (!recipe) notFound();
 
