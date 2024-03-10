@@ -4,6 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 
+import NavBar from "@/components/NavBar";
+
 import { cn } from "@/lib/utils";
 
 import "./globals.css";
@@ -29,7 +31,8 @@ export default function RootLayout({
         )}
       >
         <AuthContext>
-          <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center justify-between rounded-lg bg-white p-4">
+          <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center rounded-lg bg-white p-4">
+            <NavBar />
             {children}
           </main>
         </AuthContext>
