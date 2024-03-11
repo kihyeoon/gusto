@@ -58,7 +58,11 @@ export async function getRecipeById(id: string) {
   );
 }
 
-export async function createRecipe(recipe: RecipeFromAI, url: string) {
+export async function createRecipe(
+  recipe: RecipeFromAI,
+  url: string,
+  userId: string,
+) {
   const ingredients = recipe.ingredients;
 
   // 1. 재료 데이터 생성 (중복 체크)
@@ -95,6 +99,10 @@ export async function createRecipe(recipe: RecipeFromAI, url: string) {
     })),
     tags: [],
     url,
+    author: {
+      _type: "reference",
+      _ref: userId,
+    },
   };
 
   // 3. Sanity에 레시피 정보 저장
