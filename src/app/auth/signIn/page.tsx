@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import SignIn from "@/components/auth/SignIn";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/service/auth";
 
 export const metadata: Metadata = {
   title: "Sign In",
