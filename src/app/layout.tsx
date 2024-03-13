@@ -1,7 +1,10 @@
+import AuthContext from "@/context/AuthContext";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
+
+import NavBar from "@/components/NavBar";
 
 import { cn } from "@/lib/utils";
 
@@ -27,9 +30,12 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center justify-between rounded-lg bg-white p-4">
-          {children}
-        </main>
+        <AuthContext>
+          <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center rounded-lg bg-white p-4">
+            <NavBar />
+            {children}
+          </main>
+        </AuthContext>
         <Analytics />
         <SpeedInsights />
       </body>

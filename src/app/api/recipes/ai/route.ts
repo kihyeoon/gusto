@@ -11,11 +11,14 @@ export const runtime = "edge";
 interface Request {
   script: string;
   url: string;
+  userId: string;
 }
 
+/** TODO: 현재 next-auth의 getServerSession을 엣지에서 사용할 수 없어서 userId를 클라이언트에서 받아오는 방식으로 사용중
+ * => v5으로 마이그레이션 하면 수정 필요 (https://github.com/nextauthjs/next-auth/pull/7443)
+ */
 export async function POST(req: NextRequest) {
-  const { script, url }: Request = await req.json();
-  console.log(script);
+  const { script, url, userId }: Request = await req.json();
 
   try {
     const openai = OpenAIService.getInstance();
@@ -29,8 +32,7 @@ export async function POST(req: NextRequest) {
 
     // const recipeFromAI: RecipeFromAI = await getRecipeSample();
 
-    const createdRecipe = await createRecipe(recipeFromAI, url);
-    console.log(createdRecipe);
+    const createdRecipe = await createRecipe(recipeFromAI, url, userId);
 
     return NextResponse.json(createdRecipe);
   } catch (error) {

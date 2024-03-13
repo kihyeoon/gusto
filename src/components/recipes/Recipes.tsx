@@ -1,7 +1,7 @@
 "use client";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
 import RecipeView from "@/components/recipe/RecipeView";

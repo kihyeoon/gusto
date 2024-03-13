@@ -27,25 +27,42 @@ const recipePreviewProjection = groq`
   "tags": tags[]->title,
 `;
 
-export async function getAllRecipes(): Promise<Recipe[]> {
-  return client.fetch(
+export async function getAllRecipes() {
+  return client.fetch<Recipe[]>(
     groq`
       *[_type == "recipe"] 
       | order(_createdAt desc) {${recipePreviewProjection}}
       `,
+    {},
+    { cache: "no-store" },
   );
 }
 
-export async function getRecipeById(id: string): Promise<Recipe> {
-  return client.fetch(
+export async function getRecipesOf(email: string) {
+  return client.fetch<Recipe>(
+    groq`
+      *[_type == "recipe" && author->email == "${email}"] {${recipePreviewProjection}}
+    `,
+    { email },
+    { cache: "no-store" },
+  );
+}
+
+export async function getRecipeById(id: string) {
+  return client.fetch<Recipe>(
     groq`
       *[_type == "recipe" && _id == "${id}"][0] {${recipeProjection}}
     `,
     { id },
+    { cache: "no-store" },
   );
 }
 
-export async function createRecipe(recipe: RecipeFromAI, url: string) {
+export async function createRecipe(
+  recipe: RecipeFromAI,
+  url: string,
+  userId: string,
+) {
   const ingredients = recipe.ingredients;
 
   // 1. 재료 데이터 생성 (중복 체크)
@@ -82,6 +99,10 @@ export async function createRecipe(recipe: RecipeFromAI, url: string) {
     })),
     tags: [],
     url,
+    author: {
+      _type: "reference",
+      _ref: userId,
+    },
   };
 
   // 3. Sanity에 레시피 정보 저장

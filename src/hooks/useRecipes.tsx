@@ -1,4 +1,5 @@
 import { Recipe, RecipePreview } from "@/models/recipe";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -12,6 +13,7 @@ export default function useRecipes() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const userId = useSession().data?.user?.id;
 
   const createRecipe = async (url: string) => {
     setLoading(true);
@@ -26,6 +28,7 @@ export default function useRecipes() {
         body: JSON.stringify({
           script: script.map((s: Script) => s.text).join("\n"),
           url,
+          userId,
         }),
       }).then((res) => res.json());
 
