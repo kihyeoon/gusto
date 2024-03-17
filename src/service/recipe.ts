@@ -1,4 +1,5 @@
 import { Recipe, RecipeFromAI } from "@/models/recipe";
+import type { Sort } from "@/types/common";
 import { groq } from "next-sanity";
 
 import { client, urlFor } from "@/service/sanity";
@@ -38,10 +39,11 @@ export async function getAllRecipes() {
   );
 }
 
-export async function getRecipesOf(email: string) {
+export async function getRecipesOf(email: string, sort: Sort = "desc") {
   return client.fetch<Recipe>(
     groq`
-      *[_type == "recipe" && author->email == "${email}"] {${recipePreviewProjection}}
+      *[_type == "recipe" && author->email == "${email}"] 
+      | order(_createdAt ${sort}) {${recipePreviewProjection}}
     `,
     { email },
     { cache: "no-store" },
@@ -63,7 +65,7 @@ export async function createRecipe(
   url: string,
   userId: string,
 ) {
-  const ingredients = recipe.ingredients;
+  const { ingredients, steps } = recipe;
 
   // 1. 재료 데이터 생성 (중복 체크)
   const createdIngredients = await Promise.all(
@@ -94,7 +96,7 @@ export async function createRecipe(
       },
       amount: ingredients[index].amount,
     })),
-    steps: recipe.steps.map((step) => ({
+    steps: steps.map((step) => ({
       stepDescription: step.description,
     })),
     tags: [],
