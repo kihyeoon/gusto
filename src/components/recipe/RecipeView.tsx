@@ -12,7 +12,6 @@ interface Props {
 export default function RecipeView({
   recipe: { title, url, description, ingredients, steps, tips },
 }: Props) {
-  url && console.log(getQueryParam(url, "v"));
   return (
     <div className="flex flex-col gap-5">
       <h2 className="text-2xl font-bold">{title}</h2>

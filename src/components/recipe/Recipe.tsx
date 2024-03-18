@@ -8,13 +8,15 @@ import RecipeView from "@/components/recipe/RecipeView";
 import { Button } from "@/components/ui/button";
 
 import { Recipe } from "@/models/recipe";
+import RecipeEdit from "@/components/recipe/RecipeEdit";
 
 export default function Recipe({recipe}: {recipe: Recipe}) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [recipeState, setRecipe] = useState<Recipe>(recipe);
 
   return (
     <div className="flex w-full flex-col gap-7">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between sticky top-0 bg-background">
         <Link href="/">
           <ArrowLeftIcon className="h-6 w-6 cursor-pointer" />
         </Link>
@@ -39,10 +41,9 @@ export default function Recipe({recipe}: {recipe: Recipe}) {
         )}
       </div>
         {isEditMode ? (
-          // <RecipeEdit recipe={recipe} setRecipe={setRecipe} /> 
-          null
+          <RecipeEdit recipe={recipeState} setRecipe={setRecipe} /> 
         ) : (
-          <RecipeView recipe={recipe} />
+          <RecipeView recipe={recipeState} />
         )}
     </div>
   );

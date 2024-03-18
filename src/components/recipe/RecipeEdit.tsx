@@ -1,34 +1,53 @@
 import { Recipe } from "@/models/recipe";
 
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   recipe: Recipe;
   setRecipe: (recipe: Recipe) => void;
 }
 
+// TODO: 블록기반 WYSIWYG 에디터로 변경
 export default function RecipeEdit({ recipe, setRecipe }: Props) {
+  const { title, url, description, ingredients, steps, tips } = recipe;
   return (
-    // edit mode
     <div className="flex flex-col gap-5">
-      {/* <Input
-        className="text-2xl font-bold"
-        value={recipe.title}
+      <Textarea
+        className="resize-none text-2xl font-bold"
+        value={title}
+        rows={1}
         onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
-      ></Input>
+      />
       <div className="flex flex-col gap-3">
+        {description && (
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xl font-semibold">소개</h3>
+            <p>{description}</p>
+          </div>
+        )}
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
-          {recipe.ingredients.map(({ name, amount }, i) => (
-            <li key={i}>
+          {ingredients.map(({ name, amount }, i) => (
+            <li className="flex gap-2" key={i}>
               <Input
                 value={name}
                 onChange={(e) => {
-                  const newIngredients = [...recipe.ingredients];
-                  newIngredients[i] = e.target.value;
+                  const newIngredients = [...ingredients];
+                  newIngredients[i].name = e.target.value;
                   setRecipe({ ...recipe, ingredients: newIngredients });
                 }}
               />
+              {amount && (
+                <Input
+                  value={amount}
+                  onChange={(e) => {
+                    const newIngredients = [...ingredients];
+                    newIngredients[i].amount = e.target.value;
+                    setRecipe({ ...recipe, ingredients: newIngredients });
+                  }}
+                />
+              )}
             </li>
           ))}
         </ul>
@@ -36,14 +55,16 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">요리 순서</h3>
         <ul className="flex flex-col gap-2">
-          {recipe.body.map((step, i) => (
+          {steps.map(({ description }, i) => (
             <li key={i}>
-              <Input
-                value={step}
+              <Textarea
+                className="resize-none"
+                rows={1}
+                value={description}
                 onChange={(e) => {
-                  const newBody = [...recipe.body];
-                  newBody[i] = e.target.value;
-                  setRecipe({ ...recipe, body: newBody });
+                  const newSteps = [...steps];
+                  newSteps[i] = { description: e.target.value };
+                  setRecipe({ ...recipe, steps: newSteps });
                 }}
               />
             </li>
@@ -53,12 +74,14 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">Tips</h3>
         <ul className="flex flex-col gap-2">
-          {recipe.tips.map((tip, i) => (
+          {tips.map((tip, i) => (
             <li key={i}>
-              <Input
+              <Textarea
+                className="resize-none"
+                rows={1}
                 value={tip}
                 onChange={(e) => {
-                  const newTips = [...recipe.tips];
+                  const newTips = [...tips];
                   newTips[i] = e.target.value;
                   setRecipe({ ...recipe, tips: newTips });
                 }}
@@ -66,7 +89,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             </li>
           ))}
         </ul>
-      </div> */}
+      </div>
     </div>
   );
 }

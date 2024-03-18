@@ -10,7 +10,7 @@ export default function NavBar() {
   const user = session?.user;
 
   return (
-    <nav className="sticky top-0 z-20 mb-3 flex w-full items-center justify-end gap-1 bg-background">
+    <nav className="z-20 mb-3 flex w-full items-center justify-end gap-1 bg-background">
       {user && (
         <Avatar>
           <AvatarImage src={user.image} />
