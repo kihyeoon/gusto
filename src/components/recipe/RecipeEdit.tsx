@@ -1,8 +1,9 @@
-import { Recipe } from "@/models/recipe";
+import { Ingredient, Recipe } from "@/models/recipe";
 
 import CommentForm from "@/components/recipe/CommentForm";
+import IngredientContent from "@/components/recipe/IngredientContent";
 import TextContent from "@/components/recipe/TextContent";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
@@ -22,7 +23,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
       />
       {description && (
-        <div className="flex flex-col gap-3">
+        <section className="flex flex-col gap-3">
           <h3 className="text-xl font-semibold">소개</h3>
           <Textarea
             className="resize-none"
@@ -32,34 +33,41 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
               setRecipe({ ...recipe, description: e.target.value })
             }
           />
-        </div>
+        </section>
       )}
-      <div className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
           {ingredients.map(({ name, amount }, i) => (
             <li className="flex gap-2" key={i}>
-              <Input
-                value={name}
+              <IngredientContent
+                name={name}
+                amount={amount || ""}
                 onChange={(e) => {
                   const newIngredients = [...ingredients];
-                  newIngredients[i].name = e.target.value;
+                  newIngredients[i][e.target.name as keyof Ingredient] =
+                    e.target.value;
                   setRecipe({ ...recipe, ingredients: newIngredients });
                 }}
-              />
-              <Input
-                value={amount || ""}
-                onChange={(e) => {
+                onDelete={() => {
                   const newIngredients = [...ingredients];
-                  newIngredients[i].amount = e.target.value;
+                  newIngredients.splice(i, 1);
                   setRecipe({ ...recipe, ingredients: newIngredients });
                 }}
               />
             </li>
           ))}
         </ul>
-      </div>
-      <div className="flex flex-col gap-3">
+        <Button
+          onClick={() => {
+            const newIngredients = [...ingredients, { name: "", amount: "" }];
+            setRecipe({ ...recipe, ingredients: newIngredients });
+          }}
+        >
+          재료 추가
+        </Button>
+      </section>
+      <section className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">요리 순서</h3>
         <ul className="flex flex-col gap-2">
           {steps.map(({ description }, i) => (
@@ -86,8 +94,8 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             setRecipe({ ...recipe, steps: newSteps });
           }}
         />
-      </div>
-      <div className="flex flex-col gap-3">
+      </section>
+      <section className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">Tips</h3>
         <ul className="flex flex-col gap-2">
           {tips.map((tip, i) => (
@@ -114,7 +122,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             setRecipe({ ...recipe, tips: newTips });
           }}
         />
-      </div>
+      </section>
     </div>
   );
 }

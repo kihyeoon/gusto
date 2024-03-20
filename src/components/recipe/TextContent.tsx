@@ -1,6 +1,4 @@
-import { MinusIcon } from "@radix-ui/react-icons";
-
-import { Button } from "@/components/ui/button";
+import DeleteButton from "@/components/shared/DeleteButton";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
@@ -18,13 +16,7 @@ export default function TextContent({ value, onChange, onDelete }: Props) {
         value={value}
         onChange={onChange}
       />
-      <Button
-        className="absolute -right-1 -top-1 size-4 rounded-full p-0"
-        variant="destructive"
-        onClick={onDelete}
-      >
-        <MinusIcon className="size-3" />
-      </Button>
+      <DeleteButton className="absolute -right-1 -top-1" onDelete={onDelete} />
     </div>
   );
 }
