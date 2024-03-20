@@ -1,5 +1,6 @@
 import { Recipe } from "@/models/recipe";
 
+import CommentForm from "@/components/recipe/CommentForm";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -19,13 +20,20 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         rows={1}
         onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
       />
+      {description && (
+        <div className="flex flex-col gap-3">
+          <h3 className="text-xl font-semibold">소개</h3>
+          <Textarea
+            className="resize-none"
+            rows={1}
+            value={description}
+            onChange={(e) =>
+              setRecipe({ ...recipe, description: e.target.value })
+            }
+          />
+        </div>
+      )}
       <div className="flex flex-col gap-3">
-        {description && (
-          <div className="flex flex-col gap-3">
-            <h3 className="text-xl font-semibold">소개</h3>
-            <p>{description}</p>
-          </div>
-        )}
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
           {ingredients.map(({ name, amount }, i) => (
@@ -38,16 +46,14 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
                   setRecipe({ ...recipe, ingredients: newIngredients });
                 }}
               />
-              {amount && (
-                <Input
-                  value={amount}
-                  onChange={(e) => {
-                    const newIngredients = [...ingredients];
-                    newIngredients[i].amount = e.target.value;
-                    setRecipe({ ...recipe, ingredients: newIngredients });
-                  }}
-                />
-              )}
+              <Input
+                value={amount || ""}
+                onChange={(e) => {
+                  const newIngredients = [...ingredients];
+                  newIngredients[i].amount = e.target.value;
+                  setRecipe({ ...recipe, ingredients: newIngredients });
+                }}
+              />
             </li>
           ))}
         </ul>
@@ -70,6 +76,12 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             </li>
           ))}
         </ul>
+        <CommentForm
+          onSubmit={(content) => {
+            const newSteps = [...steps, { description: content }];
+            setRecipe({ ...recipe, steps: newSteps });
+          }}
+        />
       </div>
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">Tips</h3>
@@ -89,6 +101,12 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
             </li>
           ))}
         </ul>
+        <CommentForm
+          onSubmit={(content) => {
+            const newTips = [...tips, content];
+            setRecipe({ ...recipe, tips: newTips });
+          }}
+        />
       </div>
     </div>
   );
