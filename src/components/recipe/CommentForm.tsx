@@ -25,7 +25,10 @@ export default function CommentForm({ onSubmit }: Props) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <Button className="absolute right-3 top-1/2 size-8 -translate-y-1/2 p-0">
+      <Button
+        className="absolute right-3 top-1/2 size-8 -translate-y-1/2 p-0"
+        disabled={!content}
+      >
         <ArrowUpIcon className="h-4 w-4" />
       </Button>
     </form>

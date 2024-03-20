@@ -1,6 +1,7 @@
 import { Recipe } from "@/models/recipe";
 
 import CommentForm from "@/components/recipe/CommentForm";
+import TextContent from "@/components/recipe/TextContent";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -63,13 +64,16 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         <ul className="flex flex-col gap-2">
           {steps.map(({ description }, i) => (
             <li key={i}>
-              <Textarea
-                className="resize-none"
-                rows={1}
+              <TextContent
                 value={description}
                 onChange={(e) => {
                   const newSteps = [...steps];
                   newSteps[i] = { description: e.target.value };
+                  setRecipe({ ...recipe, steps: newSteps });
+                }}
+                onDelete={() => {
+                  const newSteps = [...steps];
+                  newSteps.splice(i, 1);
                   setRecipe({ ...recipe, steps: newSteps });
                 }}
               />
@@ -88,13 +92,16 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         <ul className="flex flex-col gap-2">
           {tips.map((tip, i) => (
             <li key={i}>
-              <Textarea
-                className="resize-none"
-                rows={1}
+              <TextContent
                 value={tip}
                 onChange={(e) => {
                   const newTips = [...tips];
                   newTips[i] = e.target.value;
+                  setRecipe({ ...recipe, tips: newTips });
+                }}
+                onDelete={() => {
+                  const newTips = [...tips];
+                  newTips.splice(i, 1);
                   setRecipe({ ...recipe, tips: newTips });
                 }}
               />
