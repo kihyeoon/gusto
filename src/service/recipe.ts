@@ -110,3 +110,74 @@ export async function createRecipe(
   // 3. Sanity에 레시피 정보 저장
   return await client.create(newRecipe, { autoGenerateArrayKeys: true });
 }
+
+async function findOrCreateDocument(
+  name: string,
+  type: string,
+): Promise<string> {
+  const query = groq`*[_type == "${type}" && title == "${name}"][0]`;
+  const params = { name, type };
+  const existingDoc = await client.fetch(query, params);
+
+  if (existingDoc) {
+    return existingDoc._id;
+  } else {
+    const newDoc = {
+      _type: type,
+      title: name,
+    };
+    const createdDoc = await client.create(newDoc);
+    return createdDoc._id;
+  }
+}
+
+export async function updateRecipe(recipeData: Recipe) {
+  const { id, title, description, url, ingredients, steps, tips, tags } =
+    recipeData;
+
+  // 재료와 태그를 처리
+  const newIngredients = await Promise.all(
+    ingredients.map(async (ingredient) => {
+      const ingredientId = await findOrCreateDocument(
+        ingredient.name,
+        "ingredient",
+      );
+      return {
+        name: { _type: "reference", _ref: ingredientId },
+        amount: ingredient.amount,
+      };
+    }),
+  );
+
+  const newTags = await Promise.all(
+    tags.map(async (tagName) => {
+      const tagId = await findOrCreateDocument(tagName, "tag");
+      return {
+        _type: "reference",
+        _ref: tagId,
+      };
+    }),
+  );
+
+  try {
+    const updatedRecipe = await client
+      .patch(id)
+      .set({
+        title,
+        description,
+        url,
+        ingredients: newIngredients,
+        steps: steps.map((step) => ({
+          stepDescription: step.description,
+        })),
+        tips,
+        tags: newTags,
+      })
+      .commit({ autoGenerateArrayKeys: true });
+
+    return updatedRecipe;
+  } catch (error) {
+    console.error("Error updating recipe:", error);
+    throw error;
+  }
+}
