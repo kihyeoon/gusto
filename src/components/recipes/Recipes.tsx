@@ -1,11 +1,11 @@
 "use client";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
-import RecipeView from "@/components/recipe/RecipeView";
 import RecipeList from "@/components/recipes/RecipeList";
+import RecipeListSkeleton from "@/components/recipes/RecipeListSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -13,11 +13,9 @@ import useRecipes from "@/hooks/useRecipes";
 
 export default function Recipes() {
   const [url, setUrl] = useState("");
-  const { recipes, listLoading, recipe, loading, createRecipe } = useRecipes();
+  const { recipes, listLoading, loading, createRecipe } = useRecipes();
 
-  const isRecipeReady = !loading && recipe;
   const isListReady = !listLoading && recipes;
-  const showList = !(recipe || loading);
 
   return (
     <div className="flex w-full flex-1 flex-col gap-5 bg-background px-4 py-2">
@@ -39,17 +37,12 @@ export default function Recipes() {
           )}
         </Button>
       </div>
-      {showList ? (
-        isListReady ? (
-          <RecipeList recipes={recipes} />
-        ) : (
-          <RecipeSkeleton />
-        )
+      {loading ? (
+        <RecipeSkeleton />
+      ) : isListReady ? (
+        <RecipeList recipes={recipes} />
       ) : (
-        <>
-          {loading && <RecipeSkeleton />}
-          {isRecipeReady && <RecipeView recipe={recipe} />}
-        </>
+        <RecipeListSkeleton />
       )}
     </div>
   );

@@ -8,7 +8,7 @@ export default function RecipeList({ recipes }: { recipes: RecipePreview[] }) {
         <Link href={`/recipe/${recipe.id}`} key={recipe.id}>
           <li className="flex cursor-pointer items-center gap-3">
             <div className="font-semibold">{index + 1}</div>
-            <div className="size-10 rounded-full border border-black"></div>
+            <div className="size-10 rounded-full border border-primary"></div>
             <div className="flex flex-col">
               <h3 className="text-lg font-semibold">{recipe.title}</h3>
               <div className="flex gap-1">

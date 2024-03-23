@@ -1,4 +1,4 @@
-import { Recipe, RecipePreview } from "@/models/recipe";
+import { RecipePreview } from "@/models/recipe";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
