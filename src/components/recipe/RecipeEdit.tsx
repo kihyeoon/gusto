@@ -4,6 +4,7 @@ import CommentForm from "@/components/recipe/CommentForm";
 import IngredientContent from "@/components/recipe/IngredientContent";
 import TextContent from "@/components/recipe/TextContent";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
@@ -22,19 +23,24 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         rows={1}
         onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
       />
-      {description && (
-        <section className="flex flex-col gap-3">
-          <h3 className="text-xl font-semibold">소개</h3>
-          <Textarea
-            className="resize-none"
-            rows={1}
-            value={description}
-            onChange={(e) =>
-              setRecipe({ ...recipe, description: e.target.value })
-            }
-          />
-        </section>
-      )}
+      <section className="flex flex-col gap-3">
+        <h3 className="text-xl font-semibold">URL</h3>
+        <Input
+          value={url || ""}
+          onChange={(e) => setRecipe({ ...recipe, url: e.target.value })}
+        />
+      </section>
+      <section className="flex flex-col gap-3">
+        <h3 className="text-xl font-semibold">소개</h3>
+        <Textarea
+          className="resize-none"
+          rows={1}
+          value={description || ""}
+          onChange={(e) =>
+            setRecipe({ ...recipe, description: e.target.value })
+          }
+        />
+      </section>
       <section className="flex flex-col gap-3">
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">

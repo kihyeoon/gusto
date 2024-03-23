@@ -19,6 +19,7 @@ export default function Recipe({recipe}: {recipe: Recipe}) {
       body: JSON.stringify(recipeState),
     }).then((res) => res.json());
     console.log(res);
+    setIsEditMode(false);
   }
 
   return (
@@ -30,6 +31,7 @@ export default function Recipe({recipe}: {recipe: Recipe}) {
               className="size-6 cursor-pointer"               
               onClick={() => {
                 setIsEditMode(false);
+                setRecipe(recipe);
               }}
             />
             <Button
