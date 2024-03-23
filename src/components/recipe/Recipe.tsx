@@ -23,8 +23,8 @@ export default function Recipe({recipe}: {recipe: Recipe}) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-7">
-      <div className="flex items-center justify-between sticky top-0 bg-background z-10">
+    <div className="flex w-full flex-col">
+      <header className="flex items-center justify-between sticky top-0 px-4 py-2 z-10 bg-background">
         {isEditMode ? (
           <>
             <Cross1Icon 
@@ -58,7 +58,7 @@ export default function Recipe({recipe}: {recipe: Recipe}) {
             </Button>
           </>
         )}
-      </div>
+      </header>
         {isEditMode ? (
           <RecipeEdit recipe={recipeState} setRecipe={setRecipe} /> 
         ) : (

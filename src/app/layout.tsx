@@ -26,13 +26,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-neutral-100 font-sans antialiased",
+          "flex min-h-dvh flex-col bg-neutral-200 font-sans antialiased",
           fontSans.variable,
         )}
       >
         <AuthContext>
-          <main className="mx-auto flex min-h-dvh max-w-sm flex-col items-center rounded-lg bg-white p-4">
-            <NavBar />
+          <NavBar />
+          <main className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center bg-neutral-100">
             {children}
           </main>
         </AuthContext>

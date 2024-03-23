@@ -20,22 +20,22 @@ export default function Recipes() {
   const showList = !(recipe || loading);
 
   return (
-    <div className="flex w-full flex-col gap-7">
+    <div className="flex w-full flex-1 flex-col gap-5 bg-background px-4 py-2">
       <div className="flex w-full items-center justify-center gap-3">
         <Input
           className="w-full"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter a YouTube video URL"
+          placeholder="YouTube URL을 입력하세요"
         />
         <Button onClick={() => createRecipe(url)} disabled={loading}>
           {loading ? (
             <>
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              please wait
+              생성 중입니다
             </>
           ) : (
-            "Create Recipe"
+            "AI로 레시피 만들기"
           )}
         </Button>
       </div>

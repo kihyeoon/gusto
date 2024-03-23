@@ -12,25 +12,30 @@ interface Props {
   setRecipe: (recipe: Recipe) => void;
 }
 
+const sectionStyle = "flex flex-col gap-3 bg-background p-4";
+
 // TODO: 블록기반 WYSIWYG 에디터로 변경
 export default function RecipeEdit({ recipe, setRecipe }: Props) {
   const { title, url, description, ingredients, steps, tips } = recipe;
   return (
-    <div className="flex flex-col gap-5">
-      <Textarea
-        className="resize-none text-2xl font-bold"
-        value={title}
-        rows={1}
-        onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
-      />
-      <section className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
+      <section className={sectionStyle}>
+        <h3 className="text-xl font-semibold">제목</h3>
+        <Textarea
+          className="resize-none text-2xl font-bold"
+          value={title}
+          rows={1}
+          onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
+        />
+      </section>
+      <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">URL</h3>
         <Input
           value={url || ""}
           onChange={(e) => setRecipe({ ...recipe, url: e.target.value })}
         />
       </section>
-      <section className="flex flex-col gap-3">
+      <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">소개</h3>
         <Textarea
           className="resize-none"
@@ -41,7 +46,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
           }
         />
       </section>
-      <section className="flex flex-col gap-3">
+      <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
           {ingredients.map(({ name, amount }, i) => (
@@ -73,7 +78,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
           재료 추가
         </Button>
       </section>
-      <section className="flex flex-col gap-3">
+      <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">요리 순서</h3>
         <ul className="flex flex-col gap-2">
           {steps.map(({ description }, i) => (
@@ -101,7 +106,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
           }}
         />
       </section>
-      <section className="flex flex-col gap-3">
+      <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">Tips</h3>
         <ul className="flex flex-col gap-2">
           {tips.map((tip, i) => (
