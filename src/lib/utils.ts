@@ -5,7 +5,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getQueryParam = (url: string, key: string) => {
+export const getQueryParam = (url: string | URL, key: string) => {
+  if (typeof url === "string") {
+    url = new URL(url);
+  }
+  return url.searchParams.get(key);
+};
+
+export const getVideoId = (url: string) => {
+  // https://www.youtube.com/shorts/ASD123ZXC 처럼 shorts가 첫 번째 path인 경우 처리
   const urlObj = new URL(url);
-  return urlObj.searchParams.get(key);
+  const paths = urlObj.pathname.split("/");
+  if (paths[1] === "shorts") {
+    return paths[2];
+  }
+  return getQueryParam(urlObj, "v");
 };
