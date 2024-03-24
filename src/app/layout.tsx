@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 
 import NavBar from "@/components/NavBar";
+import { Toaster } from "@/components/ui/toaster";
 
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           <main className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center bg-neutral-100">
             {children}
           </main>
+          <Toaster />
         </AuthContext>
         <Analytics />
         <SpeedInsights />

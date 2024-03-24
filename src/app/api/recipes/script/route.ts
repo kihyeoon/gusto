@@ -22,5 +22,8 @@ export async function GET(req: NextRequest) {
       return [{ offset: 0, text: "error" }];
     });
 
+  if (YTtranscript[0].text === "error") {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+  }
   return NextResponse.json(YTtranscript);
 }

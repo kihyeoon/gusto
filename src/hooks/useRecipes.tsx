@@ -1,7 +1,9 @@
-import { RecipePreview } from "@/models/recipe";
+import { Recipe, RecipePreview } from "@/models/recipe";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { useToast } from "@/components/ui/use-toast";
 
 import { type Script } from "@/app/api/recipes/script/route";
 
@@ -11,30 +13,73 @@ export default function useRecipes() {
   const [recipes, setRecipes] = useState<RecipePreview[]>([]);
   const [listLoading, setListLoading] = useState(true);
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
   const userId = useSession().data?.user?.id;
+  const { toast } = useToast();
 
   const createRecipe = async (url: string) => {
-    setLoading(true);
-
     try {
-      const script = await fetch(
-        `/api/recipes/script?videoId=${getVideoId(url)}`,
-      ).then((res) => res.json());
+      setLoading(true);
 
-      const recipe = await fetch(`/api/recipes/ai`, {
+      const script: Script[] = await fetch(
+        `/api/recipes/script?videoId=${getVideoId(url)}`,
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.error) {
+            throw new Error(res.error);
+          }
+          return res;
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+
+      const recipe: Recipe = await fetch(`/api/recipes/ai`, {
         method: "POST",
         body: JSON.stringify({
-          script: script.map((s: Script) => s.text).join("\n"),
+          script: script.map((s) => s.text).join("\n"),
           url,
           userId,
         }),
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.error) {
+            throw new Error(res.error);
+          }
+          return res;
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
 
-      // /recipe/${recipe._id} 로 이동
-      router.push(`/recipe/${recipe._id}`);
+      router.push(`/recipe/${recipe.id}`);
     } catch (error) {
-      console.error(error);
+      if (!(error instanceof Error)) return;
+
+      const { message } = error;
+      console.error(message);
+
+      if (message.includes("Invalid URL")) {
+        toast({
+          title: "올바르지 않은 URL입니다.",
+          description:
+            "자막이 사용 가능한 YouTube 요리 영상의 URL을 입력해주세요.",
+        });
+      } else if (message.includes("No recipe found")) {
+        toast({
+          title: "레시피를 찾을 수 없습니다.",
+          description: "요리와 관련된 영상의 URL을 입력해주세요.",
+        });
+      } else {
+        toast({
+          title: "레시피 생성에 실패했습니다.",
+          description: "다시 시도해주세요.",
+        });
+      }
+
       setLoading(false);
     }
   };
