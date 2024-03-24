@@ -20,7 +20,7 @@ export interface RecipeFromAI {
 
 export type RecipePreview = Pick<
   Recipe,
-  "id" | "title" | "description" | "tags"
+  "id" | "title" | "description" | "tags" | "url"
 >;
 
 export interface Ingredient {

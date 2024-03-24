@@ -10,18 +10,14 @@ export default function NavBar() {
   const user = session?.user;
 
   return (
-    <nav className="sticky top-0 z-20 mb-3 flex w-full items-center justify-end gap-1 bg-background">
+    <nav className="z-20 mx-auto flex h-12 w-full max-w-sm items-center justify-end gap-1 bg-background px-4 pt-2">
       {user && (
-        <Avatar>
+        <Avatar className="cursor-pointer" onClick={() => signOut()}>
           <AvatarImage src={user.image} />
           <AvatarFallback>{user.username}</AvatarFallback>
         </Avatar>
       )}
-      {session ? (
-        <Button onClick={() => signOut()}>로그아웃</Button>
-      ) : (
-        <Button onClick={() => signIn()}>로그인</Button>
-      )}
+      {!session && <Button onClick={() => signIn()}>로그인</Button>}
     </nav>
   );
 }

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { cache } from "react";
 
 import Recipe from "@/components/recipe/Recipe";
 

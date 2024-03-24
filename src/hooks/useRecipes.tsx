@@ -1,16 +1,15 @@
-import { Recipe, RecipePreview } from "@/models/recipe";
+import { RecipePreview } from "@/models/recipe";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { type Script } from "@/app/api/recipes/script/route";
 
-import { getQueryParam } from "@/lib/utils";
+import { getVideoId } from "@/lib/utils";
 
 export default function useRecipes() {
   const [recipes, setRecipes] = useState<RecipePreview[]>([]);
   const [listLoading, setListLoading] = useState(true);
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const userId = useSession().data?.user?.id;
@@ -20,7 +19,7 @@ export default function useRecipes() {
 
     try {
       const script = await fetch(
-        `/api/recipes/script?videoId=${getQueryParam(url, "v")}`,
+        `/api/recipes/script?videoId=${getVideoId(url)}`,
       ).then((res) => res.json());
 
       const recipe = await fetch(`/api/recipes/ai`, {
@@ -60,5 +59,5 @@ export default function useRecipes() {
     fetchRecipes();
   }, []);
 
-  return { recipes, listLoading, recipe, loading, createRecipe };
+  return { recipes, listLoading, loading, createRecipe };
 }
