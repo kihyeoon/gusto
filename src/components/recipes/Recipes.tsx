@@ -26,7 +26,7 @@ export default function Recipes() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="YouTube URL을 입력하세요"
         />
-        <Button onClick={() => createRecipe(url)} disabled={loading}>
+        <Button onClick={() => createRecipe(url)} disabled={!url || loading}>
           {loading ? (
             <>
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

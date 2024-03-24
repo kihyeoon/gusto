@@ -50,7 +50,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
         <h3 className="text-xl font-semibold">재료</h3>
         <ul className="flex flex-col gap-2">
           {ingredients.map(({ name, amount }, i) => (
-            <li className="flex gap-2" key={i}>
+            <li className="flex w-full gap-2" key={i}>
               <IngredientContent
                 name={name}
                 amount={amount || ""}
