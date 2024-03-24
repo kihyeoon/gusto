@@ -4,15 +4,17 @@ import Link from "next/link";
 export default function RecipeList({ recipes }: { recipes: RecipePreview[] }) {
   return (
     <ul className="flex flex-col gap-4">
-      {recipes.map((recipe, index) => (
-        <Link href={`/recipe/${recipe.id}`} key={recipe.id}>
+      {recipes.map(({ id, title, tags }, index) => (
+        <Link href={`/recipe/${id}`} key={id} className="w-full">
           <li className="flex cursor-pointer items-center gap-3">
-            <div className="font-semibold">{index + 1}</div>
-            <div className="size-10 rounded-full border border-primary"></div>
-            <div className="flex flex-col">
-              <h3 className="text-lg font-semibold">{recipe.title}</h3>
+            <div className="w-5 text-center font-semibold">{index + 1}</div>
+            <div className="size-12 rounded-full border border-primary"></div>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <h3 className="truncate text-lg font-semibold" aria-label={title}>
+                {title}
+              </h3>
               <div className="flex gap-1">
-                {recipe.tags.map((tag) => (
+                {tags.map((tag) => (
                   <span key={tag} className="text-sm text-gray-500">
                     {`#${tag}`}
                   </span>
