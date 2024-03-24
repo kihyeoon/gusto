@@ -26,6 +26,7 @@ const recipePreviewProjection = groq`
   "title": title,
   "description": description,
   "tags": tags[]->title,
+  "url": url,
 `;
 
 export async function getAllRecipes() {

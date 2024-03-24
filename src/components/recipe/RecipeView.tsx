@@ -3,7 +3,7 @@
 import { Recipe } from "@/models/recipe";
 import Image from "next/image";
 
-import { getQueryParam } from "@/lib/utils";
+import { getVideoId } from "@/lib/utils";
 
 interface Props {
   recipe: Recipe;
@@ -19,7 +19,7 @@ export default function RecipeView({
       {url && (
         <a href={url} target="_blank" rel="noreferrer">
           <Image
-            src={`https://img.youtube.com/vi/${getQueryParam(url, "v")}/maxresdefault.jpg`}
+            src={`https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`}
             alt={title}
             width={500}
             height={300}

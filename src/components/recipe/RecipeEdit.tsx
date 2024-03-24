@@ -109,7 +109,7 @@ export default function RecipeEdit({ recipe, setRecipe }: Props) {
       <section className={sectionStyle}>
         <h3 className="text-xl font-semibold">Tips</h3>
         <ul className="flex flex-col gap-2">
-          {tips.map((tip, i) => (
+          {tips?.map((tip, i) => (
             <li key={i}>
               <TextContent
                 value={tip}
