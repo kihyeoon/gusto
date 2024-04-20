@@ -1,9 +1,10 @@
-import { Recipe, RecipePreview } from "@/models/recipe";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
+
+import { Recipe, RecipePreview } from "@/models/recipe";
 
 import { type Script } from "@/app/api/recipes/script/route";
 
@@ -55,7 +56,7 @@ export default function useRecipes() {
           throw new Error(err);
         });
 
-      router.push(`/recipe/${recipe.id}`);
+      router.push(`/recipe/${recipe._id}`);
     } catch (error) {
       if (!(error instanceof Error)) return;
 
