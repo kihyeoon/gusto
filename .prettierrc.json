@@ -6,7 +6,11 @@
   "printWidth": 80,
   "arrowParens": "always",
   "tailwindConfig": "./tailwind.config.ts",
-  "tailwindFunctions": ["clsx", "cva", "cn"],
+  "tailwindFunctions": [
+    "clsx",
+    "cva",
+    "cn"
+  ],
   "plugins": [
     "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
@@ -17,6 +21,7 @@
     "^@/hooks/(.*)$",
     "^@/service/(.*)$",
     "^@/features/(.*)$",
+    "^@/models/(.*)$",
     "^@/common/(.*)$",
     "^@/app/(.*)",
     "^@/lib/(.*)$",
