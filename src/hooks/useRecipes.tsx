@@ -1,9 +1,10 @@
-import { Recipe, RecipePreview } from "@/models/recipe";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
+
+import { Recipe, RecipePreview } from "@/models/recipe";
 
 import { type Script } from "@/app/api/recipes/script/route";
 
@@ -55,7 +56,7 @@ export default function useRecipes() {
           throw new Error(err);
         });
 
-      router.push(`/recipe/${recipe.id}`);
+      router.push(`/recipe/${recipe._id}`);
     } catch (error) {
       if (!(error instanceof Error)) return;
 
@@ -84,6 +85,18 @@ export default function useRecipes() {
     }
   };
 
+  const deleteRecipe = async (id: string) => {
+    try {
+      await fetch(`/api/recipes/${id}`, {
+        method: "DELETE",
+      });
+
+      setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -104,5 +117,5 @@ export default function useRecipes() {
     fetchRecipes();
   }, []);
 
-  return { recipes, listLoading, loading, createRecipe };
+  return { recipes, listLoading, loading, createRecipe, deleteRecipe };
 }

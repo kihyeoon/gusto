@@ -13,7 +13,8 @@ import useRecipes from "@/hooks/useRecipes";
 
 export default function Recipes() {
   const [url, setUrl] = useState("");
-  const { recipes, listLoading, loading, createRecipe } = useRecipes();
+  const { recipes, listLoading, loading, createRecipe, deleteRecipe } =
+    useRecipes();
 
   const isListReady = !listLoading && recipes;
 
@@ -40,7 +41,7 @@ export default function Recipes() {
       {loading ? (
         <RecipeSkeleton />
       ) : isListReady ? (
-        <RecipeList recipes={recipes} />
+        <RecipeList recipes={recipes} deleteRecipe={deleteRecipe} />
       ) : (
         <RecipeListSkeleton />
       )}

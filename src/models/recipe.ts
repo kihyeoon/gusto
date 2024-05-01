@@ -1,4 +1,5 @@
 export interface Recipe {
+  _id: string;
   id: string;
   title: string;
   description: string | null;

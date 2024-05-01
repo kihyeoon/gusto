@@ -1,8 +1,9 @@
-import { Recipe, RecipeFromAI } from "@/models/recipe";
 import type { Sort } from "@/types/common";
 import { groq } from "next-sanity";
 
 import { client, urlFor } from "@/service/sanity";
+
+import { Recipe, RecipeFromAI } from "@/models/recipe";
 
 const recipeProjection = groq`
   ...,
@@ -181,4 +182,16 @@ export async function updateRecipe(recipeData: Recipe) {
     console.error("Error updating recipe:", error);
     throw error;
   }
+}
+
+export async function deleteRecipe(id: string) {
+  await client
+    .delete(id)
+    .then(() => {
+      console.log(`Recipe ${id} deleted successfully`);
+    })
+    .catch((error) => {
+      console.error("Error deleting recipe:", error);
+      throw error;
+    });
 }
