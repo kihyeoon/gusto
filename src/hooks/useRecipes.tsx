@@ -85,6 +85,18 @@ export default function useRecipes() {
     }
   };
 
+  const deleteRecipe = async (id: string) => {
+    try {
+      await fetch(`/api/recipes/${id}`, {
+        method: "DELETE",
+      });
+
+      setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -105,5 +117,5 @@ export default function useRecipes() {
     fetchRecipes();
   }, []);
 
-  return { recipes, listLoading, loading, createRecipe };
+  return { recipes, listLoading, loading, createRecipe, deleteRecipe };
 }

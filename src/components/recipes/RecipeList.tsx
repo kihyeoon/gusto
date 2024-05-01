@@ -7,9 +7,14 @@ import { RecipePreview } from "@/models/recipe";
 
 import { getVideoId } from "@/lib/utils";
 
-export default function RecipeList({ recipes }: { recipes: RecipePreview[] }) {
+interface Props {
+  recipes: RecipePreview[];
+  deleteRecipe: (id: string) => void;
+}
+
+export default function RecipeList({ recipes, deleteRecipe }: Props) {
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-4 overflow-hidden">
       {recipes.map(({ id, title, tags, url }, index) => (
         <ListItemMotion key={id}>
           <Link href={`/recipe/${id}`} className="w-full">
@@ -43,7 +48,12 @@ export default function RecipeList({ recipes }: { recipes: RecipePreview[] }) {
               </div>
             </li>
           </Link>
-          <div className="absolute right-[-40px] top-1/2 size-5 -translate-y-1/2 transform bg-red-400"></div>
+          <button
+            className="absolute right-[-96px] top-1/2 flex h-full w-20 -translate-y-1/2 transform items-center justify-center bg-destructive text-white"
+            onClick={() => deleteRecipe(id)}
+          >
+            지우기
+          </button>
         </ListItemMotion>
       ))}
     </ul>
