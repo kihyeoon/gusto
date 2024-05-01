@@ -11,10 +11,6 @@ type Props = {
 
 export const ListItemMotion = ({ children }: Props) => {
   const x = useMotionValue(0);
-  useMotionValueEvent(x, "change", (latest) => {
-    console.log(latest);
-  });
-
   const dragControls = useAnimation();
 
   const handleDragEnd = () => {
