@@ -16,7 +16,7 @@ export default function TextContent({ value, onChange, onDelete }: Props) {
         value={value}
         onChange={onChange}
       />
-      <DeleteButton className="absolute -right-1 -top-1" onDelete={onDelete} />
+      <DeleteButton className="absolute -right-1 -top-1" onClick={onDelete} />
     </div>
   );
 }

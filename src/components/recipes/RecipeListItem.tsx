@@ -41,6 +41,9 @@ export const RecipeListItem = ({
             alt={title}
             width={48}
             height={48}
+            onError={(e) => {
+              e.currentTarget.src = "/images/placeholder.png";
+            }}
           />
         ) : (
           <div className="size-12 rounded-full border border-primary bg-secondary"></div>

@@ -1,7 +1,8 @@
 "use client";
 
-import { Recipe } from "@/models/recipe";
 import Image from "next/image";
+
+import { Recipe } from "@/models/recipe";
 
 import { getVideoId } from "@/lib/utils";
 
@@ -23,6 +24,9 @@ export default function RecipeView({
             alt={title}
             width={500}
             height={300}
+            onError={(e) => {
+              e.currentTarget.src = "/images/placeholder.png";
+            }}
           />
         </a>
       )}

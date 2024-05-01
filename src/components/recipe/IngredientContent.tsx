@@ -18,7 +18,7 @@ export default function IngredientContent({
     <div className="relative flex gap-2">
       <Input value={name} name="name" onChange={onChange} />
       <Input value={amount} name="amount" onChange={onChange} />
-      <DeleteButton className="absolute -right-1 -top-1" onDelete={onDelete} />
+      <DeleteButton className="absolute -right-1 -top-1" onClick={onDelete} />
     </div>
   );
 }
