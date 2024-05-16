@@ -19,7 +19,8 @@ const recipeProjection = groq`
     "description": stepDescription,
   },
   "tags": tags[]->title,
-  "tips": tips[],  
+  "tips": tips[],
+  "author": author->email,
 `;
 
 const recipePreviewProjection = groq`

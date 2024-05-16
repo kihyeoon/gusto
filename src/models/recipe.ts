@@ -9,6 +9,7 @@ export interface Recipe {
   tips: string[];
   tags: string[];
   createdAt: Date;
+  author: string;
 }
 
 export interface RecipeFromAI {

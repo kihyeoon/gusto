@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeftIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,6 +14,10 @@ import { type Recipe } from "@/models/recipe";
 export default function Recipe({ recipe }: { recipe: Recipe }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [recipeState, setRecipe] = useState<Recipe>(recipe);
+
+  const session = useSession();
+  const isOwner = session?.data?.user?.email === recipeState.author;
+
   const updateRecipe = async () => {
     const res = await fetch("/api/recipes", {
       method: "PUT",
@@ -48,14 +53,16 @@ export default function Recipe({ recipe }: { recipe: Recipe }) {
             <Link href="/">
               <ArrowLeftIcon className="size-6 cursor-pointer" />
             </Link>
-            <Button
-              className="w-20"
-              onClick={() => {
-                setIsEditMode(true);
-              }}
-            >
-              수정
-            </Button>
+            {isOwner && (
+              <Button
+                className="w-20"
+                onClick={() => {
+                  setIsEditMode(true);
+                }}
+              >
+                수정
+              </Button>
+            )}
           </>
         )}
       </header>
