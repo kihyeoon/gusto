@@ -1,4 +1,4 @@
-import DeleteButton from "@/components/shared/DeleteButton";
+import DeleteButton from "@/components/DeleteButton";
 import { Input } from "@/components/ui/input";
 
 interface Props {

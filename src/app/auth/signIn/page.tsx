@@ -3,9 +3,8 @@ import { getServerSession } from "next-auth";
 import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-import SignIn from "@/components/auth/SignIn";
-
-import { authOptions } from "@/service/auth";
+import SignIn from "@/features/auth/components/SignIn";
+import { authOptions } from "@/features/auth/services/auth";
 
 export const metadata: Metadata = {
   title: "Sign In",

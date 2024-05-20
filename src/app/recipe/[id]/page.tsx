@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 
-import Recipe from "@/components/recipe/Recipe";
-
-import { getRecipeById } from "@/service/recipe";
+import RecipeDetailContainer from "@/features/recipe/components/detail/RecipeDetailContainer";
+import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {
   params: {
@@ -17,7 +16,7 @@ export default async function RecipePage({ params: { id } }: Props) {
 
   return (
     <>
-      <Recipe recipe={recipe} />
+      <RecipeDetailContainer recipe={recipe} />
     </>
   );
 }

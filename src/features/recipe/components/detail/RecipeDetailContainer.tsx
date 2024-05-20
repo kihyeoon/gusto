@@ -5,13 +5,13 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-import RecipeEdit from "@/components/recipe/RecipeEdit";
-import RecipeView from "@/components/recipe/RecipeView";
 import { Button } from "@/components/ui/button";
 
-import { type Recipe } from "@/models/recipe";
+import RecipeEdit from "@/features/recipe/components/detail/RecipeEdit";
+import RecipeView from "@/features/recipe/components/detail/RecipeView";
+import { type Recipe } from "@/features/recipe/models/recipe";
 
-export default function Recipe({ recipe }: { recipe: Recipe }) {
+export default function RecipeDetailContainer({ recipe }: { recipe: Recipe }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [recipeState, setRecipe] = useState<Recipe>(recipe);
 

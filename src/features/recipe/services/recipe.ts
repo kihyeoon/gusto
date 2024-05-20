@@ -1,9 +1,9 @@
 import type { Sort } from "@/types/common";
 import { groq } from "next-sanity";
 
-import { client, urlFor } from "@/service/sanity";
+import { client, urlFor } from "@/services/sanity";
 
-import { Recipe, RecipeFromAI } from "@/models/recipe";
+import { Recipe, RecipeFromAI } from "@/features/recipe/models/recipe";
 
 const recipeProjection = groq`
   ...,

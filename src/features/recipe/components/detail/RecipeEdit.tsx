@@ -1,11 +1,11 @@
-import { Ingredient, Recipe } from "@/models/recipe";
-
-import CommentForm from "@/components/recipe/CommentForm";
-import IngredientContent from "@/components/recipe/IngredientContent";
-import TextContent from "@/components/recipe/TextContent";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+import CommentForm from "@/features/recipe/components/detail/CommentForm";
+import IngredientContent from "@/features/recipe/components/detail/IngredientContent";
+import TextContent from "@/features/recipe/components/detail/TextContent";
+import { Ingredient, Recipe } from "@/features/recipe/models/recipe";
 
 interface Props {
   recipe: Recipe;

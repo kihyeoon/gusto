@@ -1,7 +1,7 @@
-import { AuthUser } from "@/models/user";
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "@/service/auth";
+import { AuthUser } from "@/features/auth/models/user";
+import { authOptions } from "@/features/auth/services/auth";
 
 export async function withSessionUser(
   handler: (user: AuthUser) => Promise<Response>,

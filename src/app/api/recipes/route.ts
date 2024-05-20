@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getRecipesOf, updateRecipe } from "@/service/recipe";
-
-import { withSessionUser } from "@/lib/session";
+import { withSessionUser } from "@/features/auth/services/session";
+import { getRecipesOf, updateRecipe } from "@/features/recipe/services/recipe";
 
 export async function GET() {
   return withSessionUser(async (user) => {

@@ -1,7 +1,6 @@
-import { ListItemMotion } from "@/components/recipes/ListItemMotion";
-import { RecipeListItem } from "@/components/recipes/RecipeListItem";
-
-import { RecipePreview } from "@/models/recipe";
+import { ListItemMotion } from "@/features/recipe/components/list/ListItemMotion";
+import { RecipeListItem } from "@/features/recipe/components/list/RecipeListItem";
+import { RecipePreview } from "@/features/recipe/models/recipe";
 
 interface Props {
   recipes: RecipePreview[];

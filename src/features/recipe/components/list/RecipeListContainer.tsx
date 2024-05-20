@@ -3,15 +3,15 @@
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-import RecipeSkeleton from "@/components/recipe/RecipeSkeleton";
-import RecipeList from "@/components/recipes/RecipeList";
-import RecipeListSkeleton from "@/components/recipes/RecipeListSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import useRecipes from "@/hooks/useRecipes";
+import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
+import RecipeList from "@/features/recipe/components/list/RecipeList";
+import RecipeListSkeleton from "@/features/recipe/components/list/RecipeListSkeleton";
+import useRecipes from "@/features/recipe/hooks/useRecipes";
 
-export default function Recipes() {
+export default function RecipeListContainer() {
   const [url, setUrl] = useState("");
   const { recipes, listLoading, loading, createRecipe, deleteRecipe } =
     useRecipes();

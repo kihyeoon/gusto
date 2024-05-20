@@ -1,4 +1,4 @@
-import DeleteButton from "@/components/shared/DeleteButton";
+import DeleteButton from "@/components/DeleteButton";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Props {

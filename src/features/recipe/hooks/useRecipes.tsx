@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { Recipe, RecipePreview } from "@/models/recipe";
+import { Recipe, RecipePreview } from "@/features/recipe/models/recipe";
 
 import { type Script } from "@/app/api/recipes/script/route";
 
-import { getVideoId } from "@/lib/utils";
+import { getVideoId } from "@/libs/utils";
 
 export default function useRecipes() {
   const [recipes, setRecipes] = useState<RecipePreview[]>([]);

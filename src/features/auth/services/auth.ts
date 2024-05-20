@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-import { addUser } from "@/service/user";
+import { addUser } from "@/features/auth/services/user";
 
 export const authOptions: NextAuthOptions = {
   providers: [

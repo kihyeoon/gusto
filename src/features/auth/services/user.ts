@@ -1,4 +1,4 @@
-import { client } from "@/service/sanity";
+import { client } from "@/services/sanity";
 
 interface OAuthUser {
   id: string;

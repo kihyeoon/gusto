@@ -5,11 +5,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import DeleteButton from "@/components/shared/DeleteButton";
+import DeleteButton from "@/components/DeleteButton";
 
-import { RecipePreview } from "@/models/recipe";
+import { RecipePreview } from "@/features/recipe/models/recipe";
 
-import { getVideoId } from "@/lib/utils";
+import { getVideoId } from "@/libs/utils";
 
 interface Props {
   recipe: RecipePreview;

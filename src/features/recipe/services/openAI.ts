@@ -1,7 +1,7 @@
 import { OpenAI } from "openai";
 
-export class OpenAIService {
-  private static instance: OpenAIService;
+export class RecipeAIService {
+  private static instance: RecipeAIService;
 
   private openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -41,11 +41,11 @@ export class OpenAIService {
 
   private constructor() {}
 
-  public static getInstance(): OpenAIService {
-    if (!OpenAIService.instance) {
-      OpenAIService.instance = new OpenAIService();
+  public static getInstance(): RecipeAIService {
+    if (!RecipeAIService.instance) {
+      RecipeAIService.instance = new RecipeAIService();
     }
-    return OpenAIService.instance;
+    return RecipeAIService.instance;
   }
 
   public async getChatResponse(message: string) {

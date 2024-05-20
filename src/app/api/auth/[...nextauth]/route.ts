@@ -1,3 +1,3 @@
-import { handler } from "@/service/auth";
+import { handler } from "@/features/auth/services/auth";
 
 export { handler as GET, handler as POST };

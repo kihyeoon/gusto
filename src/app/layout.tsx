@@ -1,4 +1,3 @@
-import AuthContext from "@/context/AuthContext";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -7,7 +6,9 @@ import { Open_Sans } from "next/font/google";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 
-import { cn } from "@/lib/utils";
+import AuthContext from "@/features/auth/contexts/AuthContext";
+
+import { cn } from "@/libs/utils";
 
 import "./globals.css";
 
