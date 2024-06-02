@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 
+import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe } from "@/features/recipe/models/recipe";
-
-import { getVideoId } from "@/libs/utils";
 
 interface Props {
   recipe: Recipe;

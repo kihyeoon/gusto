@@ -7,9 +7,8 @@ import { useState } from "react";
 
 import DeleteButton from "@/components/DeleteButton";
 
+import { getVideoId } from "@/features/recipe/libs/utils";
 import { RecipePreview } from "@/features/recipe/models/recipe";
-
-import { getVideoId } from "@/libs/utils";
 
 interface Props {
   recipe: RecipePreview;

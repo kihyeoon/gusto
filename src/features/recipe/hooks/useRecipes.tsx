@@ -1,65 +1,30 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { Recipe, RecipePreview } from "@/features/recipe/models/recipe";
-
-import { type Script } from "@/app/api/recipes/script/route";
-
-import { getVideoId } from "@/libs/utils";
+import { createRecipe, deleteRecipe, getRecipes } from "@/features/recipe/apis";
 
 export default function useRecipes() {
-  const [recipes, setRecipes] = useState<RecipePreview[]>([]);
-  const [listLoading, setListLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
-
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const router = useRouter();
-  const userId = useSession().data?.user?.id;
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const createRecipe = async (url: string) => {
-    try {
-      setLoading(true);
+  const { data: recipes, isLoading: listLoading } = useQuery({
+    queryKey: ["recipes"],
+    queryFn: getRecipes,
+  });
 
-      const script: Script[] = await fetch(
-        `/api/recipes/script?videoId=${getVideoId(url)}`,
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.error) {
-            throw new Error(res.error);
-          }
-          return res;
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-
-      const recipe: Recipe = await fetch(`/api/recipes/ai`, {
-        method: "POST",
-        body: JSON.stringify({
-          script: script.map((s) => s.text).join("\n"),
-          url,
-          userId,
-        }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.error) {
-            throw new Error(res.error);
-          }
-          return res;
-        })
-        .catch((err) => {
-          throw new Error(err);
-        });
-
+  const createRecipeMutation = useMutation({
+    mutationFn: (url: string) => createRecipe(url, userId),
+    onSuccess: (recipe) => {
       router.push(`/recipe/${recipe._id}`);
-    } catch (error) {
-      if (!(error instanceof Error)) return;
-
+      return queryClient.invalidateQueries({ queryKey: ["recipes"] });
+    },
+    onError: (error: Error) => {
       const { message } = error;
       console.error(message);
 
@@ -80,42 +45,24 @@ export default function useRecipes() {
           description: "다시 시도해주세요.",
         });
       }
+    },
+  });
 
-      setLoading(false);
-    }
-  };
-
-  const deleteRecipe = async (id: string) => {
-    try {
-      await fetch(`/api/recipes/${id}`, {
-        method: "DELETE",
-      });
-
-      setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
-    } catch (error) {
+  const deleteRecipeMutation = useMutation({
+    mutationFn: (id: string) => deleteRecipe(id),
+    onSuccess: (id: string) => {
+      queryClient.invalidateQueries({ queryKey: ["recipes"] });
+    },
+    onError: (error: Error) => {
       console.error(error);
-    }
+    },
+  });
+
+  return {
+    recipes,
+    listLoading,
+    loading: createRecipeMutation.isPending || deleteRecipeMutation.isPending,
+    createRecipe: createRecipeMutation.mutate,
+    deleteRecipe: deleteRecipeMutation.mutate,
   };
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        setListLoading(true);
-
-        const recipes: RecipePreview[] = await fetch("/api/recipes").then(
-          (res) => res.json(),
-        );
-
-        setRecipes(recipes);
-        setListLoading(false);
-      } catch (error) {
-        console.error(error);
-        setListLoading(false);
-      }
-    };
-
-    fetchRecipes();
-  }, []);
-
-  return { recipes, listLoading, loading, createRecipe, deleteRecipe };
 }
