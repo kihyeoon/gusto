@@ -6,7 +6,7 @@ import { Open_Sans } from "next/font/google";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 
-import AuthContext from "@/features/auth/contexts/AuthContext";
+import Providers from "@/app/Providers";
 
 import { cn } from "@/libs/utils";
 
@@ -32,13 +32,13 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <AuthContext>
+        <Providers>
           <NavBar />
           <main className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center bg-neutral-100">
             {children}
           </main>
           <Toaster />
-        </AuthContext>
+        </Providers>
         <Analytics />
         <SpeedInsights />
       </body>
