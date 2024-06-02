@@ -13,10 +13,10 @@ import useRecipes from "@/features/recipe/hooks/useRecipes";
 
 export default function RecipeListContainer() {
   const [url, setUrl] = useState("");
-  const { recipes, listLoading, loading, createRecipe, deleteRecipe } =
+  const { recipes, isLoading, isCreatingRecipe, createRecipe, deleteRecipe } =
     useRecipes();
 
-  const isListReady = !listLoading && recipes;
+  const isListReady = !isLoading && recipes;
 
   return (
     <div className="flex w-full flex-1 flex-col gap-5 bg-background px-4 py-2">
@@ -27,8 +27,11 @@ export default function RecipeListContainer() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="YouTube URL을 입력하세요"
         />
-        <Button onClick={() => createRecipe(url)} disabled={!url || loading}>
-          {loading ? (
+        <Button
+          onClick={() => createRecipe(url)}
+          disabled={!url || isCreatingRecipe}
+        >
+          {isCreatingRecipe ? (
             <>
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
               생성 중입니다
@@ -38,7 +41,7 @@ export default function RecipeListContainer() {
           )}
         </Button>
       </div>
-      {loading ? (
+      {isCreatingRecipe ? (
         <RecipeSkeleton />
       ) : isListReady ? (
         <RecipeList recipes={recipes} deleteRecipe={deleteRecipe} />
