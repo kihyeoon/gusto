@@ -50,7 +50,7 @@ export class RecipeAIService {
 
   public async getChatResponse(message: string) {
     return await this.openai.chat.completions.create({
-      model: "gpt-3.5-turbo-0125",
+      model: "gpt-4o",
       response_format: { type: "json_object" },
       // stream: true,
       messages: [
