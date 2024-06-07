@@ -1,9 +1,8 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
-import Recipes from "@/components/recipes/Recipes";
-
-import { authOptions } from "@/service/auth";
+import { authOptions } from "@/features/auth/services/auth";
+import RecipeListContainer from "@/features/recipe/components/list/RecipeListContainer";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
@@ -15,7 +14,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Recipes />
+      <RecipeListContainer />
     </>
   );
 }

@@ -1,4 +1,3 @@
-import AuthContext from "@/context/AuthContext";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -7,7 +6,9 @@ import { Open_Sans } from "next/font/google";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 
-import { cn } from "@/lib/utils";
+import Providers from "@/app/Providers";
+
+import { cn } from "@/libs/utils";
 
 import "./globals.css";
 
@@ -31,13 +32,13 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <AuthContext>
+        <Providers>
           <NavBar />
           <main className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center bg-neutral-100">
             {children}
           </main>
           <Toaster />
-        </AuthContext>
+        </Providers>
         <Analytics />
         <SpeedInsights />
       </body>

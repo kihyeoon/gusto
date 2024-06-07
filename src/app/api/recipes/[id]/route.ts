@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { deleteRecipe } from "@/service/recipe";
-
-import { withSessionUser } from "@/lib/session";
+import { withSessionUser } from "@/features/auth/services/session";
+import { deleteRecipe } from "@/features/recipe/services/recipe";
 
 export async function DELETE(
   _: NextRequest,

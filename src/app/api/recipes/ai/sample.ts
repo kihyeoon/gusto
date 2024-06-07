@@ -1,4 +1,4 @@
-import { RecipeFromAI } from "@/models/recipe";
+import { RecipeFromAI } from "@/features/recipe/models/recipe";
 
 const recipeFromAIExample: RecipeFromAI = {
   title: "간단한 토마토 파스타",

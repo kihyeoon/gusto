@@ -1,8 +1,8 @@
-import { RecipeFromAI } from "@/models/recipe";
 import { NextRequest, NextResponse } from "next/server";
 
-import { OpenAIService } from "@/service/openAI";
-import { createRecipe } from "@/service/recipe";
+import { RecipeFromAI } from "@/features/recipe/models/recipe";
+import { RecipeAIService } from "@/features/recipe/services/openAI";
+import { createRecipe } from "@/features/recipe/services/recipe";
 
 import { getRecipeSample } from "@/app/api/recipes/ai/sample";
 
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const { script, url, userId }: Request = await req.json();
 
   try {
-    const openai = OpenAIService.getInstance();
+    const openai = RecipeAIService.getInstance();
     const response = await openai.getChatResponse(script);
     const content = response.choices[0].message.content;
     if (content === '{"error":"not recipe"}' || !content) {
