@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { YoutubeTranscript } from "youtube-transcript";
 
-export interface Script {
-  offset: number;
-  text: string;
-}
+import { Script } from "@/features/recipe/models/recipe";
+
+import { ApiErrorSchema } from "@/libs/exceptions";
 
 export async function GET(req: NextRequest) {
   const videoId = req.nextUrl.searchParams.get("videoId") || "";
@@ -23,7 +22,14 @@ export async function GET(req: NextRequest) {
     });
 
   if (YTtranscript[0].text === "error") {
-    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+    return NextResponse.json<ApiErrorSchema>(
+      {
+        message: "올바르지 않은 URL입니다.",
+        description:
+          "자막이 사용 가능한 YouTube 요리 영상의 URL을 입력해주세요.",
+      },
+      { status: 400 },
+    );
   }
   return NextResponse.json(YTtranscript);
 }

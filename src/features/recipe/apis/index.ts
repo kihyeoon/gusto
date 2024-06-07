@@ -1,5 +1,7 @@
 import { getVideoId } from "@/features/recipe/libs/utils";
-import { Recipe, RecipePreview } from "@/features/recipe/models/recipe";
+import { Recipe, RecipePreview, Script } from "@/features/recipe/models/recipe";
+
+import { get, post } from "@/libs/api";
 
 export const getRecipes = async (): Promise<RecipePreview[]> => {
   const response = await fetch("/api/recipes");
@@ -13,30 +15,16 @@ export const createRecipe = async (
   url: string,
   userId: string | undefined,
 ): Promise<Recipe> => {
-  const script = await fetch(`/api/recipes/script?videoId=${getVideoId(url)}`)
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.error) {
-        throw new Error(res.error);
-      }
-      return res;
-    });
+  // TODO: 쿼리스트링을 사용하는 대신 path parameter를 사용하도록 수정
+  const script = await get<Script[]>(
+    `/api/recipes/script?videoId=${getVideoId(url)}`,
+  );
 
-  const recipe = await fetch(`/api/recipes/ai`, {
-    method: "POST",
-    body: JSON.stringify({
-      script: script.map((s: any) => s.text).join("\n"),
-      url,
-      userId,
-    }),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.error) {
-        throw new Error(res.error);
-      }
-      return res;
-    });
+  const recipe = await post<Recipe>("/api/recipes/ai", {
+    script: script.map((s) => s.text).join("\n"),
+    url,
+    userId,
+  });
 
   return recipe;
 };

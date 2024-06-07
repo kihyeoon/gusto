@@ -6,6 +6,8 @@ import { createRecipe } from "@/features/recipe/services/recipe";
 
 import { getRecipeSample } from "@/app/api/recipes/ai/sample";
 
+import { ApiErrorSchema } from "@/libs/exceptions";
+
 export const runtime = "edge";
 
 interface Request {
@@ -25,7 +27,13 @@ export async function POST(req: NextRequest) {
     const response = await openai.getChatResponse(script);
     const content = response.choices[0].message.content;
     if (content === '{"error":"not recipe"}' || !content) {
-      return NextResponse.json({ error: "No recipe found" }, { status: 404 });
+      return NextResponse.json<ApiErrorSchema>(
+        {
+          message: "레시피를 찾을 수 없습니다.",
+          description: "요리와 관련된 영상의 URL을 입력해주세요.",
+        },
+        { status: 404 },
+      );
     }
 
     const recipeFromAI: RecipeFromAI = JSON.parse(content);
@@ -36,7 +44,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(createdRecipe);
   } catch (error) {
-    console.error(error);
-    return NextResponse.error();
+    return NextResponse.json<ApiErrorSchema>(
+      {
+        message: "레시피 생성에 실패했습니다.",
+        description: "다시 시도해주세요.",
+      },
+      { status: 500 },
+    );
   }
 }
