@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { createRecipe, deleteRecipe, getRecipes } from "@/features/recipe/apis";
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipePreview } from "@/features/recipe/models/recipe";
 
-import { ApiException } from "@/libs/exceptions";
+import { ApiException, CustomException } from "@/libs/exceptions";
 
 const RECIPE_QUERY_KEY = ["recipes"] as const;
 
@@ -29,13 +30,20 @@ export default function useRecipes() {
       router.push(`/recipe/${recipe._id}`);
       return queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY });
     },
-    onError: ({ message, description }: ApiException) => {
-      toast({
-        title: message,
-        description,
-      });
+    onError: (error: unknown) => {
+      if (error instanceof ApiException) {
+        const { message, description } = error;
+        toast({
+          title: message,
+          description,
+        });
+      } else if (error instanceof CustomException) {
+        toast({
+          title: error.message,
+        });
+      }
 
-      console.error(message, description);
+      console.error(error);
     },
   });
 
@@ -56,8 +64,8 @@ export default function useRecipes() {
     onError: (error, variables, context) => {
       queryClient.setQueryData(RECIPE_QUERY_KEY, context?.previousRecipes);
       toast({
-        title: "레시피 삭제에 실패했습니다.",
-        description: "다시 시도해주세요.",
+        title: errorMessages.CANNOT_DELETE_RECIPE.message,
+        description: errorMessages.CANNOT_DELETE_RECIPE.description,
       });
     },
     onSettled: () => {

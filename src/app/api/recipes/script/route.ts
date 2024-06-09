@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { YoutubeTranscript } from "youtube-transcript";
 
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { Script } from "@/features/recipe/models/recipe";
 
 import { ApiErrorSchema } from "@/libs/exceptions";
@@ -24,9 +25,8 @@ export async function GET(req: NextRequest) {
   if (YTtranscript[0].text === "error") {
     return NextResponse.json<ApiErrorSchema>(
       {
-        message: "올바르지 않은 URL입니다.",
-        description:
-          "자막이 사용 가능한 YouTube 요리 영상의 URL을 입력해주세요.",
+        message: errorMessages.INVALID_URL.message,
+        description: errorMessages.INVALID_URL.description,
       },
       { status: 400 },
     );

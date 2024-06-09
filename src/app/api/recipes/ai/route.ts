@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI } from "@/features/recipe/models/recipe";
 import { RecipeAIService } from "@/features/recipe/services/openAI";
 import { createRecipe } from "@/features/recipe/services/recipe";
@@ -29,8 +30,8 @@ export async function POST(req: NextRequest) {
     if (content === '{"error":"not recipe"}' || !content) {
       return NextResponse.json<ApiErrorSchema>(
         {
-          message: "레시피를 찾을 수 없습니다.",
-          description: "요리와 관련된 영상의 URL을 입력해주세요.",
+          message: errorMessages.INVALID_URL.message,
+          description: errorMessages.INVALID_URL.description,
         },
         { status: 404 },
       );
@@ -46,8 +47,8 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return NextResponse.json<ApiErrorSchema>(
       {
-        message: "레시피 생성에 실패했습니다.",
-        description: "다시 시도해주세요.",
+        message: errorMessages.CANNOT_CREAT_RECIPE.message,
+        description: errorMessages.CANNOT_CREAT_RECIPE.description,
       },
       { status: 500 },
     );

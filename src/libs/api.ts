@@ -1,17 +1,35 @@
 import axios, { type AxiosError, type AxiosResponse } from "axios";
 
-import { ApiErrorSchema, ApiException } from "@/libs/exceptions";
+import { errorMessages } from "@/libs/constants";
+import {
+  type ApiErrorSchema,
+  ApiException,
+  CustomException,
+} from "@/libs/exceptions";
 
-const instance = axios.create();
+const instance = axios.create({
+  timeout: 20000,
+});
 
 const interceptorResponseRejected = (error: AxiosError<ApiErrorSchema>) => {
   if (error.response?.data?.message) {
     return Promise.reject(
       new ApiException(error.response.data, error.response.status),
     );
+  } else if (error.code === "ECONNABORTED") {
+    // 타임아웃 에러 코드 확인
+    return Promise.reject(
+      new CustomException(errorMessages.TIMEOUT, "NETWORK_TIMEOUT"),
+    );
+  } else if (error.message === "Network Error") {
+    return Promise.reject(
+      new CustomException(errorMessages.NETWORK, "NETWORK_ERROR"),
+    );
+  } else {
+    return Promise.reject(
+      new CustomException(errorMessages.UNKNOWN, "UNKNOWN_ERROR"),
+    );
   }
-
-  return Promise.reject(error);
 };
 
 instance.interceptors.response.use(
