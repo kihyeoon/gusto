@@ -1,14 +1,10 @@
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe, RecipePreview, Script } from "@/features/recipe/models/recipe";
 
-import { get, post } from "@/libs/api";
+import { del, get, post } from "@/libs/api";
 
-export const getRecipes = async (): Promise<RecipePreview[]> => {
-  const response = await fetch("/api/recipes");
-  if (!response.ok) {
-    throw new Error("Failed to fetch recipes");
-  }
-  return response.json();
+export const getRecipes = async () => {
+  return await get<RecipePreview[]>("/api/recipes");
 };
 
 export const createRecipe = async (
@@ -30,11 +26,6 @@ export const createRecipe = async (
 };
 
 export const deleteRecipe = async (id: string) => {
-  const response = await fetch(`/api/recipes/${id}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) {
-    throw new Error("Failed to delete recipe");
-  }
+  await del(`/api/recipes/${id}`);
   return id;
 };

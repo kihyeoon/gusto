@@ -4,8 +4,8 @@ export interface ApiErrorSchema {
 }
 
 export class ApiException<ErrorCode = number> extends Error {
-  declare code: ErrorCode;
-  declare description?: string;
+  code: ErrorCode;
+  description?: string;
 
   constructor({ message, description }: ApiErrorSchema, code: ErrorCode) {
     super(message);
@@ -18,7 +18,7 @@ export class ApiException<ErrorCode = number> extends Error {
 type CustomErrorCode = "UNKNOWN_ERROR" | "NETWORK_TIMEOUT" | "NETWORK_ERROR";
 
 export class CustomException extends Error {
-  declare code: CustomErrorCode;
+  code: CustomErrorCode;
 
   constructor(message: string, code: CustomErrorCode) {
     super(message);
