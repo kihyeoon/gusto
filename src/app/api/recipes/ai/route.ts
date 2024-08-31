@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI } from "@/features/recipe/models/recipe";
 import { RecipeAIService } from "@/features/recipe/services/openAI";
 import { createRecipe } from "@/features/recipe/services/recipe";
 
 import { getRecipeSample } from "@/app/api/recipes/ai/sample";
+
+import { ApiErrorSchema } from "@/libs/exceptions";
 
 export const runtime = "edge";
 
@@ -25,7 +28,13 @@ export async function POST(req: NextRequest) {
     const response = await openai.getChatResponse(script);
     const content = response.choices[0].message.content;
     if (content === '{"error":"not recipe"}' || !content) {
-      return NextResponse.json({ error: "No recipe found" }, { status: 404 });
+      return NextResponse.json<ApiErrorSchema>(
+        {
+          message: errorMessages.INVALID_URL.message,
+          description: errorMessages.INVALID_URL.description,
+        },
+        { status: 404 },
+      );
     }
 
     const recipeFromAI: RecipeFromAI = JSON.parse(content);
@@ -36,7 +45,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(createdRecipe);
   } catch (error) {
-    console.error(error);
-    return NextResponse.error();
+    return NextResponse.json<ApiErrorSchema>(
+      {
+        message: errorMessages.CANNOT_CREAT_RECIPE.message,
+        description: errorMessages.CANNOT_CREAT_RECIPE.description,
+      },
+      { status: 500 },
+    );
   }
 }

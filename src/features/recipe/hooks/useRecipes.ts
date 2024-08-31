@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { createRecipe, deleteRecipe, getRecipes } from "@/features/recipe/apis";
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipePreview } from "@/features/recipe/models/recipe";
+
+import { ApiException, CustomException } from "@/libs/exceptions";
 
 const RECIPE_QUERY_KEY = ["recipes"] as const;
 
@@ -27,27 +30,20 @@ export default function useRecipes() {
       router.push(`/recipe/${recipe._id}`);
       return queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY });
     },
-    onError: (error: Error) => {
-      const { message } = error;
-      console.error(message);
-
-      if (message.includes("Invalid URL")) {
+    onError: (error: unknown) => {
+      if (error instanceof ApiException) {
+        const { message, description } = error;
         toast({
-          title: "올바르지 않은 URL입니다.",
-          description:
-            "자막이 사용 가능한 YouTube 요리 영상의 URL을 입력해주세요.",
+          title: message,
+          description,
         });
-      } else if (message.includes("No recipe found")) {
+      } else if (error instanceof CustomException) {
         toast({
-          title: "레시피를 찾을 수 없습니다.",
-          description: "요리와 관련된 영상의 URL을 입력해주세요.",
-        });
-      } else {
-        toast({
-          title: "레시피 생성에 실패했습니다.",
-          description: "다시 시도해주세요.",
+          title: error.message,
         });
       }
+
+      console.error(error);
     },
   });
 
@@ -68,8 +64,8 @@ export default function useRecipes() {
     onError: (error, variables, context) => {
       queryClient.setQueryData(RECIPE_QUERY_KEY, context?.previousRecipes);
       toast({
-        title: "레시피 삭제에 실패했습니다.",
-        description: "다시 시도해주세요.",
+        title: errorMessages.CANNOT_DELETE_RECIPE.message,
+        description: errorMessages.CANNOT_DELETE_RECIPE.description,
       });
     },
     onSettled: () => {
