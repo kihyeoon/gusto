@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe } from "@/features/recipe/models/recipe";
 
@@ -14,18 +15,22 @@ const sectionStyle = "flex flex-col gap-3 bg-background p-4";
 export default function RecipeView({
   recipe: { title, url, description, ingredients, steps, tips },
 }: Props) {
+  const { imgSrc, handleImageError } = useImgSrc({
+    url:
+      url && `https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`,
+    fallbackImg: "/images/placeholder.png",
+  });
+
   return (
     <div className="flex flex-col gap-3">
       {url && (
         <a href={url} target="_blank" rel="noreferrer">
           <Image
-            src={`https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`}
+            src={imgSrc}
             alt={title}
             width={500}
             height={300}
-            onError={(e) => {
-              e.currentTarget.src = "/images/placeholder.png";
-            }}
+            onError={handleImageError}
           />
         </a>
       )}

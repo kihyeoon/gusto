@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import DeleteButton from "@/components/DeleteButton";
 
+import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { RecipePreview } from "@/features/recipe/models/recipe";
 
@@ -22,6 +23,11 @@ export const RecipeListItem = ({
   deleteRecipe,
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { imgSrc, handleImageError } = useImgSrc({
+    url: url && `https://img.youtube.com/vi/${getVideoId(url)}/mqdefault.jpg`,
+    fallbackImg: "/images/placeholder.png",
+  });
+
   const router = useRouter();
 
   return (
@@ -36,13 +42,11 @@ export const RecipeListItem = ({
         {url ? (
           <Image
             className="aspect-square rounded-full border border-primary  object-cover"
-            src={`https://img.youtube.com/vi/${getVideoId(url)}/mqdefault.jpg`}
+            src={imgSrc}
             alt={title}
             width={48}
             height={48}
-            onError={(e) => {
-              e.currentTarget.src = "/images/placeholder.png";
-            }}
+            onError={handleImageError}
           />
         ) : (
           <div className="size-12 rounded-full border border-primary bg-secondary"></div>
