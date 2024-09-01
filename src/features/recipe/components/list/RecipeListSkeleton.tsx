@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function RecipeSkeleton() {
+export default function RecipeListSkeleton() {
   return (
     <div className="flex flex-col gap-4">
       {Array.from({ length: 15 }).map((_, index) => (
