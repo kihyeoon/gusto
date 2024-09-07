@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import DeleteButton from "@/components/DeleteButton";
 
@@ -23,6 +23,9 @@ export const RecipeListItem = ({
   deleteRecipe,
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { current: isTouchDevice } = useRef(
+    "ontouchstart" in window || navigator.maxTouchPoints > 0,
+  );
   const { imgSrc, handleImageError } = useImgSrc({
     url: url && `https://img.youtube.com/vi/${getVideoId(url)}/mqdefault.jpg`,
     fallbackImg: "/images/placeholder.png",
@@ -30,18 +33,30 @@ export const RecipeListItem = ({
 
   const router = useRouter();
 
+  const handleMouseEnter = () => {
+    if (!isTouchDevice) setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isTouchDevice) setIsHovered(false);
+  };
+
+  const handleClick = () => {
+    router.push(`/recipe/${id}`);
+  };
+
   return (
     <>
       <li
         className="flex cursor-pointer items-center gap-3"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => router.push(`/recipe/${id}`)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
       >
         <div className="w-5 text-center font-semibold">{index + 1}</div>
         {url ? (
           <Image
-            className="aspect-square rounded-full border border-primary  object-cover"
+            className="aspect-square rounded-full border border-primary object-cover"
             src={imgSrc}
             alt={title}
             width={48}
@@ -63,7 +78,7 @@ export const RecipeListItem = ({
             ))}
           </div>
         </div>
-        {isHovered && (
+        {!isTouchDevice && isHovered && (
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
             <DeleteButton
               onClick={(e) => {
