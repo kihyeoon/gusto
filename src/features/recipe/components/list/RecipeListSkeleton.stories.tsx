@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import RecipeListSkeleton from "./RecipeListSkeleton";
 
 const meta = {
-  title: "recipe/list skeleton",
+  title: "recipe/skeleton/list",
   component: RecipeListSkeleton,
   parameters: {
     layout: "centered",

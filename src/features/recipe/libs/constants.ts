@@ -16,3 +16,10 @@ export const errorMessages = {
     description: "다시 시도해주세요.",
   },
 } as const;
+
+export const deleteRecipePrompt = {
+  title: "레시피를 삭제하시겠어요?",
+  description: "삭제된 레시피는 복구할 수 없어요.",
+  actionText: "네, 삭제할래요.",
+  cancelText: "아니요, 취소할래요.",
+} as const;
