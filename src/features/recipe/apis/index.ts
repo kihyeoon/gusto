@@ -12,12 +12,12 @@ export const createRecipe = async (
   userId: string | undefined,
 ): Promise<Recipe> => {
   // TODO: 쿼리스트링을 사용하는 대신 path parameter를 사용하도록 수정
-  const script = await get<Script[]>(
-    `/api/recipes/script?videoId=${getVideoId(url)}`,
+  const script: any = await get(
+    `https://app.digicord.site/api/v1/youtube/transcript/${getVideoId(url)}`,
   );
 
   const recipe = await post<Recipe>("/api/recipes/ai", {
-    script: script.map((s) => s.text).join("\n"),
+    script: script.data.content,
     url,
     userId,
   });
