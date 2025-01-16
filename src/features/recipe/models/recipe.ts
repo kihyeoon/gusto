@@ -33,8 +33,3 @@ export interface Ingredient {
 export interface Step {
   description: string;
 }
-
-export interface Script {
-  offset: number;
-  text: string;
-}

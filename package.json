@@ -34,7 +34,7 @@
     "react-dom": "^18",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "youtube-transcript": "github:sinedied/youtube-transcript#a10a073ac325b3b88018f321fa1bc5d62fa69b1c"
+    "youtubei.js": "^12.2.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.6.10",
