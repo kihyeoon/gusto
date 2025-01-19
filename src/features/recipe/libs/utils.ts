@@ -11,6 +11,9 @@ export const getVideoId = (url: string) => {
   } else if (paths[1] === "shorts") {
     // https://www.youtube.com/shorts/ASD123ZXC 처럼 shorts인 경우
     return paths[2];
+  } else if (paths[1] === "embed") {
+    // https://www.youtube.com/embed/ASD123ZXC 처럼 임베드인 경우
+    return paths[2];
   }
   return getQueryParam(urlObj, "v");
 };
