@@ -21,7 +21,6 @@ const mockUsePathname = usePathname as Mock;
 
 describe("NavBar", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     mockUsePathname.mockReturnValue("/");
   });
 

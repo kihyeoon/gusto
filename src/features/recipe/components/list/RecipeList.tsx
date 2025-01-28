@@ -13,7 +13,7 @@ interface Props {
 export default function RecipeList({ recipes, deleteRecipe }: Props) {
   const router = useRouter();
   const { current: isTouchDevice } = useRef(
-    "ontouchstart" in window || navigator.maxTouchPoints > 0,
+    !!ontouchstart || navigator.maxTouchPoints > 0,
   );
 
   const navigateToRecipe = (id: string) => {
