@@ -11,6 +11,7 @@ export default function DeleteButton({ className, ...props }: Props) {
     <Button
       className={`size-4 rounded-full p-0 ${className}`}
       variant="destructive"
+      data-testid="delete-button"
       {...props}
     >
       <MinusIcon className="size-3" />

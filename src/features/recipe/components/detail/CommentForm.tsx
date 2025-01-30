@@ -24,10 +24,12 @@ export default function CommentForm({ onSubmit }: Props) {
         name="content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        aria-label="글"
       />
       <Button
         className="absolute right-3 top-1/2 size-8 -translate-y-1/2 p-0"
         disabled={!content}
+        aria-label="글 작성"
       >
         <ArrowUpIcon className="h-4 w-4" />
       </Button>

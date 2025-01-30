@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "name": "김구스토",
+      "username": "gusto",
+      "email": "gusto@example.com",
+      "image": "https://example.com/images/gusto.jpg"
+    },
+    {
+      "id": "user2",
+      "name": "이요리",
+      "username": "cook",
+      "email": "cook@example.com",
+      "image": "https://example.com/images/cook.jpg"
+    }
+  ]
+}

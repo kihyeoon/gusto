@@ -1,0 +1,90 @@
+{
+  "recipes": [
+    {
+      "_id": "recipe1",
+      "id": "recipe1",
+      "title": "맛있는 김치찌개",
+      "description": "한국의 전통 음식인 김치찌개 레시피입니다.",
+      "url": "https://www.youtube.com/watch?v=example1",
+      "ingredients": [
+        {
+          "name": "김치",
+          "amount": "300g"
+        },
+        {
+          "name": "돼지고기",
+          "amount": "200g"
+        },
+        {
+          "name": "두부",
+          "amount": "1모"
+        }
+      ],
+      "steps": [
+        {
+          "description": "김치를 적당한 크기로 썰어주세요."
+        },
+        {
+          "description": "돼지고기를 넣고 볶아주세요."
+        },
+        {
+          "description": "물을 넣고 끓여주세요."
+        }
+      ],
+      "tips": [
+        "김치는 잘 익은 것을 사용하면 더 맛있어요.",
+        "두부는 마지막에 넣어주세요."
+      ],
+      "tags": [
+        "한식",
+        "찌개",
+        "김치"
+      ],
+      "createdAt": "2024-03-20T09:00:00.000Z",
+      "author": "test@example.com"
+    },
+    {
+      "_id": "recipe2",
+      "id": "recipe2",
+      "title": "스팸 마요 덮밥",
+      "description": "간단하게 만드는 스팸 마요 덮밥입니다.",
+      "url": "https://www.youtube.com/watch?v=example2",
+      "ingredients": [
+        {
+          "name": "스팸",
+          "amount": "1캔"
+        },
+        {
+          "name": "마요네즈",
+          "amount": "4큰술"
+        },
+        {
+          "name": "밥",
+          "amount": "1공기"
+        }
+      ],
+      "steps": [
+        {
+          "description": "스팸을 깍둑썰기 해주세요."
+        },
+        {
+          "description": "팬에 스팸을 노릇하게 구워주세요."
+        },
+        {
+          "description": "밥 위에 스팸을 올리고 마요네즈를 뿌려주세요."
+        }
+      ],
+      "tips": [
+        "스팸은 바삭하게 구워주면 더 맛있어요.",
+        "기호에 따라 김가루를 뿌려주세요."
+      ],
+      "tags": [
+        "간단요리",
+        "덮밥",
+        "스팸"
+      ],
+      "createdAt": "2024-03-20T10:00:00.000Z",
+      "author": "test@example.com"
+    }
+  ]
+}
