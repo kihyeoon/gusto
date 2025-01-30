@@ -26,7 +26,6 @@ Cypress.Commands.add("assertUrl", (url) => {
   cy.url().should("eq", `${Cypress.env("baseUrl")}${url}`);
 });
 
-/// <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite

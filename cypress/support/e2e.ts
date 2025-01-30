@@ -12,5 +12,7 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+/// <reference types="cypress" />
+/// <reference types="@testing-library/cypress" />
 // Import commands.js using ES2015 syntax:
 import "./commands";
