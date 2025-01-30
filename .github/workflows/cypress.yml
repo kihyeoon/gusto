@@ -29,3 +29,7 @@ jobs:
         with:
           build: pnpm build
           start: pnpm start
+        env:
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+          SANITY_SECRET_TOKEN: ${{ secrets.SANITY_SECRET_TOKEN }}
