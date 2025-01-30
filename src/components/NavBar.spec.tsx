@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Mock } from "vitest";
+import { Mock, expect, vi } from "vitest";
 
 import render from "@/libs/test/render";
 

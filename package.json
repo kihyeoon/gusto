@@ -11,7 +11,11 @@
     "test:ui": "vitest --ui",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
+    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress:open",
+    "e2e:ci": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -49,6 +53,7 @@
     "@storybook/react": "^7.6.10",
     "@storybook/test": "^7.6.10",
     "@tanstack/react-query-devtools": "^5.37.1",
+    "@testing-library/cypress": "^10.0.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.0",
@@ -60,6 +65,7 @@
     "@vitest/ui": "3.0.2",
     "autoprefixer": "^10.0.1",
     "chromatic": "^11.25.1",
+    "cypress": "^14.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-plugin-storybook": "^0.6.15",
@@ -68,6 +74,7 @@
     "postcss": "^8",
     "prettier": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "start-server-and-test": "^2.0.10",
     "storybook": "^7.6.10",
     "tailwindcss": "^3.3.0",
     "typescript": "^5",

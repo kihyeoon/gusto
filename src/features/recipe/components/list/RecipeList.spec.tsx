@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import { expect, vi } from "vitest";
 
 import render from "@/libs/test/render";
 
@@ -66,7 +67,6 @@ describe("RecipeList", () => {
       const recipe = screen.getByText("맛있는 김치찌개").closest("li");
       await user.hover(recipe!);
       const deleteButton = await screen.findByTestId("delete-button");
-      screen.debug();
 
       expect(deleteButton).toBeInTheDocument();
     });
