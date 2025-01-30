@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import React from "react";
-import { expect } from "vitest";
+import { expect, vi } from "vitest";
 
 import TextField from "@/libs/test/TextField";
 import render from "@/libs/test/render";

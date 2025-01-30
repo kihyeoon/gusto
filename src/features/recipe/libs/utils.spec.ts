@@ -1,3 +1,5 @@
+import { expect } from "vitest";
+
 import { getVideoId } from "./utils";
 
 describe("getVideoId", () => {
@@ -31,4 +33,3 @@ describe("getVideoId", () => {
     );
   });
 });
-
