@@ -1,6 +1,7 @@
 import { handlers } from "@/__mocks__/handlers";
 import "@testing-library/jest-dom";
 import { setupServer } from "msw/node";
+import { afterAll, beforeAll, vi } from "vitest";
 
 /** msw */
 export const server = setupServer(...handlers);
