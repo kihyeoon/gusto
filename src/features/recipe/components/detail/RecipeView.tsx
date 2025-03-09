@@ -26,6 +26,7 @@ export default function RecipeView({
       {url && (
         <a href={url} target="_blank" rel="noreferrer">
           <Image
+            priority
             src={imgSrc}
             alt={title}
             width={500}
