@@ -3,7 +3,7 @@ import {
   useAnimation,
   useMotionValue,
   useMotionValueEvent,
-} from "framer-motion";
+} from "motion/react";
 
 type Props = {
   children: React.ReactNode;
@@ -34,12 +34,6 @@ export const ListItemMotion = ({ children }: Props) => {
       animate={dragControls}
       dragConstraints={{ left: -100, right: 0 }}
       onDragEnd={handleDragEnd}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.5 },
-      }}
       style={{ x }}
       viewport={{ once: true }}
     >
