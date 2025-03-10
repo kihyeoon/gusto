@@ -1,10 +1,10 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 import { addUser } from "@/features/auth/services/user";
 
-export const authOptions: NextAuthOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
       addUser({
-        id,
+        id: id || "",
         name: name || "",
         image,
         email,
@@ -83,6 +83,4 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signIn",
   },
-};
-
-export const handler = NextAuth(authOptions);
+});

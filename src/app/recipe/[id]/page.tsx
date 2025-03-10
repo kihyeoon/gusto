@@ -5,9 +5,9 @@ import RecipeDetailContainer from "@/features/recipe/components/detail/RecipeDet
 import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const metadata: Metadata = {
@@ -21,7 +21,13 @@ export const metadata: Metadata = {
 //   return { title: recipe.title };
 // }
 
-export default async function RecipePage({ params: { id } }: Props) {
+export default async function RecipePage(props: Props) {
+  const params = await props.params;
+
+  const {
+    id
+  } = params;
+
   const recipe = await getRecipeById(id);
 
   if (!recipe) notFound();
