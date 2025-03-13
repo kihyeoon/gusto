@@ -23,3 +23,5 @@ export const deleteRecipePrompt = {
   actionText: "네, 삭제할래요.",
   cancelText: "아니요, 취소할래요.",
 } as const;
+
+export const RECIPE_QUERY_KEY = ["recipes"] as const;

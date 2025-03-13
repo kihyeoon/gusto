@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 
 import TextContent from "./TextContent";
 
@@ -25,5 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     value: "",
+    onChange: fn(),
+    onDelete: fn(),
   },
 };

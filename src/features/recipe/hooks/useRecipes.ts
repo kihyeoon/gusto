@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { createRecipe, deleteRecipe, getRecipes } from "@/features/recipe/apis";
-import { errorMessages } from "@/features/recipe/libs/constants";
+import {
+  RECIPE_QUERY_KEY,
+  errorMessages,
+} from "@/features/recipe/libs/constants";
 import { RecipePreview } from "@/features/recipe/models/recipe";
 
 import { ApiException, CustomException } from "@/libs/exceptions";
-
-const RECIPE_QUERY_KEY = ["recipes"] as const;
 
 export default function useRecipes() {
   const { data: session } = useSession();
@@ -22,6 +23,7 @@ export default function useRecipes() {
   const { data: recipes, isLoading } = useQuery({
     queryKey: RECIPE_QUERY_KEY,
     queryFn: getRecipes,
+    staleTime: 10 * 1000,
   });
 
   const createRecipeMutation = useMutation({
