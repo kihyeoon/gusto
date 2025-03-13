@@ -3,7 +3,7 @@ import { groq } from "next-sanity";
 
 import { client, urlFor } from "@/services/sanity";
 
-import { Recipe, RecipeFromAI } from "@/features/recipe/models/recipe";
+import { Recipe, RecipeFromAI, RecipePreview } from "@/features/recipe/models/recipe";
 
 const recipeProjection = groq`
   ...,
@@ -43,7 +43,7 @@ export async function getAllRecipes() {
 }
 
 export async function getRecipesOf(email: string, sort: Sort = "desc") {
-  return client.fetch<Recipe>(
+  return client.fetch<RecipePreview[]>(
     groq`
       *[_type == "recipe" && author->email == "${email}"] 
       | order(_createdAt ${sort}) {${recipePreviewProjection}}

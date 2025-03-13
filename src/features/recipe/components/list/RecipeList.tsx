@@ -1,5 +1,7 @@
+"use client";
+
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { BlurFade } from "@/components/ui/blur-fade";
 
@@ -14,9 +16,14 @@ interface Props {
 
 export default function RecipeList({ recipes, deleteRecipe }: Props) {
   const router = useRouter();
-  const { current: isTouchDevice } = useRef(
-    !!window?.ontouchstart || navigator.maxTouchPoints > 0,
-  );
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  
+  // window 객체 접근을 useEffect 내부로 이동
+  useEffect(() => {
+    setIsTouchDevice(
+      !!window?.ontouchstart || navigator.maxTouchPoints > 0
+    );
+  }, []);
 
   const navigateToRecipe = (id: string) => {
     router.push(`/recipe/${id}`);
