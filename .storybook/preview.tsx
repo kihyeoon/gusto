@@ -8,7 +8,6 @@ const fontSans = Open_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
