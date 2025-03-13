@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { addUser } from "@/features/auth/services/user";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  trustHost: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
