@@ -9,7 +9,7 @@ export const stepSchema = z.object({
   description: z.string().min(1, "조리 단계 설명은 필수입니다"),
 });
 
-export const recipeFromAISchema = z.object({
+export const recipeSchema = z.object({
   title: z.string().min(1, "레시피 제목은 필수입니다"),
   description: z.string().nullable(),
   ingredients: z
@@ -19,4 +19,4 @@ export const recipeFromAISchema = z.object({
   tips: z.array(z.string()).nullable(),
 });
 
-export type RecipeFromAISchema = z.infer<typeof recipeFromAISchema>;
+export type RecipeSchema = z.infer<typeof recipeSchema>;

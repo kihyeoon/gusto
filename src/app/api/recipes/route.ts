@@ -2,9 +2,10 @@ import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import { NextRequest, NextResponse } from "next/server";
 
+import { auth } from "@/features/auth/services/auth";
 import { withSessionUser } from "@/features/auth/services/session";
 import { recipePrompt } from "@/features/recipe/libs/ai/prompt";
-import { recipeFromAISchema } from "@/features/recipe/libs/ai/schemas";
+import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
 import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI } from "@/features/recipe/models/recipe";
 import { getRecipesOf, updateRecipe } from "@/features/recipe/services/recipe";
@@ -31,25 +32,34 @@ export async function PUT(req: NextRequest) {
   });
 }
 
-interface StreamRequest {
+interface PostRequest {
   script: string;
   url: string;
-  userId: string;
+  id: string;
 }
 
 export async function POST(req: NextRequest) {
-  const { script, url, userId }: StreamRequest = await req.json();
+  const { script, url, id }: PostRequest = await req.json();
+
+  const session = await auth();
+  const userId = session?.user.id;
+
+  if (!userId) {
+    return NextResponse.json<ApiErrorSchema>(
+      { message: "로그인이 필요합니다." },
+      { status: 401 },
+    );
+  }
 
   try {
     const result = streamObject({
       model: openai("gpt-4o"),
-      schema: recipeFromAISchema,
+      schema: recipeSchema,
       system: recipePrompt,
       prompt: script,
       onFinish: async (completion) => {
         try {
           // 완전한 레시피 객체로 DB에 저장
-          // completion.object에 실제 스키마에 맞는 데이터가 있음
           if (completion.object) {
             const recipeFromAI: RecipeFromAI = {
               title: completion.object.title,
@@ -58,7 +68,7 @@ export async function POST(req: NextRequest) {
               steps: completion.object.steps,
               tips: completion.object.tips,
             };
-            await createRecipe(recipeFromAI, url, userId);
+            await createRecipe(recipeFromAI, url, userId, id);
             console.log("레시피가 성공적으로 저장되었습니다.");
           }
         } catch (error) {

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/features/auth/services/auth";
 import { getRecipesServer } from "@/features/recipe/apis/server";
 import RecipeListContainer from "@/features/recipe/components/list/RecipeListContainer";
+import RecipeCreater from "@/features/recipe/components/recipe-creater";
 import { RECIPE_QUERY_KEY } from "@/features/recipe/libs/constants";
 
 import { HydrationBoundary } from "@/libs/HydrationBoundary";
@@ -27,7 +28,8 @@ export default async function HomePage() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <RecipeListContainer />
+      {/* <RecipeListContainer /> */}
+      <RecipeCreater />
     </HydrationBoundary>
   );
 }
