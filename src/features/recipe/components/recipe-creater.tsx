@@ -13,7 +13,7 @@ import { useObjectStream } from "@/features/recipe/hooks/use-object-stream";
 import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
 import { RECIPE_QUERY_KEY } from "@/features/recipe/libs/constants";
 import { getVideoId } from "@/features/recipe/libs/utils";
-import { Recipe } from "@/features/recipe/models/recipe";
+import { Recipe, RecipeInput } from "@/features/recipe/models/recipe";
 
 import { get } from "@/libs/api";
 import { generateUUID } from "@/libs/utils";
@@ -69,7 +69,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
 
       window.history.replaceState({}, "", `/recipe/${newRecipeId}`);
 
-      const requestData = {
+      const requestData: RecipeInput = {
         script: script.join("\n"),
         url: url,
         id: newRecipeId,

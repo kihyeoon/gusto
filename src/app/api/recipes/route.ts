@@ -7,7 +7,7 @@ import { withSessionUser } from "@/features/auth/services/session";
 import { recipePrompt } from "@/features/recipe/libs/ai/prompt";
 import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
 import { errorMessages } from "@/features/recipe/libs/constants";
-import { RecipeFromAI } from "@/features/recipe/models/recipe";
+import { RecipeFromAI, RecipeInput } from "@/features/recipe/models/recipe";
 import { getRecipesOf, updateRecipe } from "@/features/recipe/services/recipe";
 import { createRecipe } from "@/features/recipe/services/recipe";
 
@@ -32,14 +32,8 @@ export async function PUT(req: NextRequest) {
   });
 }
 
-interface PostRequest {
-  script: string;
-  url: string;
-  id: string;
-}
-
 export async function POST(req: NextRequest) {
-  const { script, url, id }: PostRequest = await req.json();
+  const { script, url, id }: RecipeInput = await req.json();
 
   const session = await auth();
   const userId = session?.user.id;
