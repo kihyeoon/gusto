@@ -84,6 +84,12 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !isGenerating && url) {
+      handleCreateRecipe();
+    }
+  };
+
   const isGenerating = isScriptLoading || isLoading;
   const showInputSection = !isGenerating && !object;
   const showResult = object !== undefined;
@@ -91,6 +97,11 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
   return (
     <div className="mx-auto h-full w-full max-w-4xl rounded-lg border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="flex flex-col space-y-8">
+        {isGenerating && (
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {isScriptLoading ? "스크립트 가져오는 중..." : "레시피 생성 중..."}
+          </div>
+        )}
         {isGenerating && !showResult && <RecipeSkeleton />}
 
         {showResult && (
@@ -211,47 +222,53 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
         {showInputSection && (
           <div className="mt-auto">
             <h2 className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
-              AI 레시피 생성기
+              어떤 레시피를 알고 싶으세요?
             </h2>
             <p className="mb-4 text-gray-600 dark:text-gray-300">
-              YouTube 동영상의 URL을 입력하면 AI가 레시피를 생성해 드립니다.
+              YouTube 영상의 URL을 입력하면 레시피를 요약해 드릴게요.
             </p>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Input
-                className="flex-1"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="YouTube URL을 입력하세요"
-                disabled={isGenerating}
-              />
-              <Button
-                onClick={handleCreateRecipe}
-                disabled={!url || isGenerating}
-                className="whitespace-nowrap"
-              >
-                {isGenerating ? (
-                  <>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                    {isScriptLoading
-                      ? "스크립트 가져오는 중..."
-                      : "레시피 생성 중..."}
-                  </>
-                ) : (
-                  "레시피 생성하기"
-                )}
-              </Button>
+            <div className="relative rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
+              <div className="flex items-center py-2">
+                <Input
+                  className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="YouTube URL을 입력하세요"
+                  disabled={isGenerating}
+                />
+                <Button
+                  onClick={handleCreateRecipe}
+                  disabled={!url || isGenerating}
+                  className="mr-1 rounded-full p-2"
+                  variant="ghost"
+                >
+                  {isGenerating ? (
+                    <ReloadIcon className="h-5 w-5 animate-spin text-gray-500 dark:text-gray-400" />
+                  ) : (
+                    <svg
+                      className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  )}
+                </Button>
+              </div>
             </div>
 
             {error && (
               <div className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
                 {error}
-              </div>
-            )}
-
-            {isGenerating && (
-              <div className="mt-4 rounded-md bg-blue-50 p-3 text-sm text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                레시피를 생성하는 중입니다. 잠시만 기다려주세요...
               </div>
             )}
           </div>
