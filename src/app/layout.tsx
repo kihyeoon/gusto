@@ -67,10 +67,10 @@ export default function RootLayout({
         )}
       >
         <Providers>
-          <NavBar />
           <main className="mx-auto flex w-full max-w-md flex-[1_1_0] flex-col items-center bg-neutral-100">
             {children}
           </main>
+          <NavBar />
           <Toaster />
         </Providers>
         <Analytics />

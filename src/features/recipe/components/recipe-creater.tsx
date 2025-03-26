@@ -106,7 +106,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
   const showResult = object !== undefined;
 
   return (
-    <div className="mx-auto h-full w-full max-w-4xl rounded-lg border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div className="mx-auto h-full w-full max-w-4xl bg-background p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="flex flex-col space-y-8">
         {isGenerating && (
           <div className="text-xs text-gray-500 dark:text-gray-400">
