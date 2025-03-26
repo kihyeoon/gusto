@@ -2,6 +2,7 @@
 
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import { useState } from "react";
 
 import { BlurFade } from "@/components/ui/blur-fade";
@@ -10,6 +11,7 @@ import { Input } from "@/components/ui/input";
 
 import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
 import { useObjectStream } from "@/features/recipe/hooks/use-object-stream";
+import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
 import { RECIPE_QUERY_KEY } from "@/features/recipe/libs/constants";
 import { getVideoId } from "@/features/recipe/libs/utils";
@@ -36,6 +38,15 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
       queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY });
     },
     initialValue: initialRecipe,
+  });
+
+  const initialUrl = initialRecipe?.url;
+  const getThumbnailUrl = (url: string) =>
+    `https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`;
+
+  const { imgSrc, handleImageError } = useImgSrc({
+    url: !!object && initialUrl ? getThumbnailUrl(initialUrl) : "",
+    fallbackImg: "/images/placeholder.png",
   });
 
   /**
@@ -123,6 +134,42 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
             <div className="space-y-6">
               {object.description && (
                 <BlurFade>
+                  {url ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mb-4 block"
+                    >
+                      <Image
+                        priority
+                        src={getThumbnailUrl(url)}
+                        alt={object.title || "레시피 썸네일"}
+                        width={500}
+                        height={300}
+                        className="w-full rounded-lg"
+                      />
+                    </a>
+                  ) : (
+                    initialUrl && (
+                      <a
+                        href={initialUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mb-4 block"
+                      >
+                        <Image
+                          priority
+                          src={imgSrc}
+                          alt={object.title || "레시피 썸네일"}
+                          width={500}
+                          height={300}
+                          className="w-full rounded-lg"
+                          onError={handleImageError}
+                        />
+                      </a>
+                    )
+                  )}
                   <p className="rounded-lg bg-gray-50 p-4 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                     {object.description}
                   </p>
