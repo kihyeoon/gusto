@@ -65,18 +65,18 @@ describe("NavBar", () => {
       });
     });
 
-    it("사용자 아바타(Fallback)가 보인다", async () => {
+    it("마이페이지 메뉴가 보인다", async () => {
       await render(<NavBar />);
 
-      const avatarFallback = screen.getByText("test");
-      expect(avatarFallback).toBeInTheDocument();
+      const myPageMenu = screen.getByText("마이페이지");
+      expect(myPageMenu).toBeInTheDocument();
     });
 
-    it("아바타를 클릭하고 로그아웃을 확인하면 로그아웃 함수가 호출된다", async () => {
+    it("마이페이지를 클릭하고 로그아웃을 확인하면 로그아웃 함수가 호출된다", async () => {
       const { user } = await render(<NavBar />);
 
-      const avatar = screen.getByText("test");
-      await user.click(avatar);
+      const myPageButton = screen.getByText("마이페이지");
+      await user.click(myPageButton);
 
       const confirmButton = await screen.findByRole("button", { name: "네" });
       await user.click(confirmButton);
