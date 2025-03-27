@@ -96,7 +96,7 @@ export default function NavBar() {
                   </AvatarFallback>
                 </Avatar>
               }
-              label="마이페이지"
+              label="내 정보"
               isActive={pathname === "/profile"}
             />
           }

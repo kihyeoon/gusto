@@ -8,6 +8,7 @@ import { useState } from "react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 
 import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
 import { useObjectStream } from "@/features/recipe/hooks/use-object-stream";
@@ -109,26 +110,23 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
     <div className="mx-auto h-full w-full max-w-4xl bg-background p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="flex flex-col space-y-8">
         {isGenerating && (
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <TextShimmer className="text-xs" spread={5}>
             {isScriptLoading ? "스크립트 가져오는 중..." : "레시피 생성 중..."}
-          </div>
+          </TextShimmer>
         )}
         {isGenerating && !showResult && <RecipeSkeleton />}
 
         {showResult && (
           <div className="space-y-6">
-            {isLoading && (
-              <div className="flex justify-end">
-                <Button variant="destructive" size="sm" onClick={() => stop()}>
-                  중지하기
-                </Button>
-              </div>
-            )}
-
-            <div className="flex">
+            <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 {object.title || "레시피"}
               </h2>
+              {isLoading && (
+                <Button variant="destructive" size="sm" onClick={() => stop()}>
+                  중지하기
+                </Button>
+              )}
             </div>
 
             <div className="space-y-6">
