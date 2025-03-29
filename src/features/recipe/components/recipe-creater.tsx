@@ -1,26 +1,19 @@
 "use client";
 
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TextShimmer } from "@/components/ui/text-shimmer";
+import { useToast } from "@/components/ui/use-toast";
 
 import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
 import RecipeSuggestions from "@/features/recipe/components/recipe-suggestions";
-import { useObjectStream } from "@/features/recipe/hooks/use-object-stream";
+import { useRecipeCreation } from "@/features/recipe/hooks/use-recipe-creation";
 import useImgSrc from "@/features/recipe/hooks/useImgSrc";
-import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
-import { RECIPE_QUERY_KEY } from "@/features/recipe/libs/constants";
-import { getVideoId } from "@/features/recipe/libs/utils";
-import { Recipe, RecipeInput } from "@/features/recipe/models/recipe";
-
-import { get } from "@/libs/api";
-import { generateUUID } from "@/libs/utils";
+import { Recipe } from "@/features/recipe/models/recipe";
 
 interface RecipeCreaterProps {
   initialRecipe?: Recipe;
@@ -28,89 +21,47 @@ interface RecipeCreaterProps {
 
 const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
   const [url, setUrl] = useState("");
-  const [isScriptLoading, setIsScriptLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const queryClient = useQueryClient();
+  const {
+    recipe,
+    createRecipe,
+    isGenerating,
+    isScriptLoading,
+    error,
+    stop,
+    showInputSection,
+    showResult,
+    getThumbnailUrl,
+  } = useRecipeCreation({ initialRecipe });
 
-  const { object, submit, isLoading, stop } = useObjectStream({
-    api: "/api/recipes",
-    schema: recipeSchema,
-    onFinish: (_) => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY });
-    },
-    initialValue: initialRecipe,
-  });
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "레시피 생성 오류",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
 
   const initialUrl = initialRecipe?.url;
-  const getThumbnailUrl = (url: string) =>
-    `https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`;
 
   const { imgSrc, handleImageError } = useImgSrc({
-    url: !!object && initialUrl ? getThumbnailUrl(initialUrl) : "",
+    url: !!recipe && initialUrl ? getThumbnailUrl(initialUrl) : "",
     fallbackImg: "/images/placeholder.png",
   });
 
-  /**
-   * URL에서 스크립트 가져오고 레시피 생성 요청
-   */
-  const handleCreateRecipe = async (recipeUrl: string) => {
-    if (!recipeUrl) return;
-
-    try {
-      setError(null);
-      setIsScriptLoading(true);
-
-      const videoId = getVideoId(recipeUrl);
-      if (!videoId) {
-        setError("올바른 YouTube URL을 입력해주세요.");
-        setIsScriptLoading(false);
-        return;
-      }
-
-      const script = await get<string[]>(
-        `/api/recipes/script?videoId=${videoId}`,
-      );
-
-      if (!script || script.length === 0) {
-        setError("스크립트를 가져올 수 없습니다. 다른 영상을 시도해주세요.");
-        setIsScriptLoading(false);
-        return;
-      }
-
-      const newRecipeId = generateUUID();
-
-      window.history.replaceState({}, "", `/recipe/${newRecipeId}`);
-
-      const requestData: RecipeInput = {
-        script: script.join("\n"),
-        url: recipeUrl,
-        id: newRecipeId,
-      };
-
-      submit(requestData);
-    } catch (error) {
-      console.error("레시피 생성 중 오류 발생:", error);
-      setError("레시피를 생성하는 중 오류가 발생했습니다.");
-    } finally {
-      setIsScriptLoading(false);
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !isGenerating && url) {
-      handleCreateRecipe(url);
+      createRecipe(url);
     }
   };
 
   const handleSelectVideo = (videoUrl: string) => {
     setUrl(videoUrl);
-    handleCreateRecipe(videoUrl);
+    createRecipe(videoUrl);
   };
-
-  const isGenerating = isScriptLoading || isLoading;
-  const showInputSection = !isGenerating && !object;
-  const showResult = object !== undefined;
 
   return (
     <div className="mx-auto h-full w-full max-w-4xl bg-background p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -126,9 +77,9 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                {object.title || "레시피"}
+                {recipe?.title || "레시피"}
               </h2>
-              {isLoading && (
+              {isGenerating && (
                 <Button variant="destructive" size="sm" onClick={() => stop()}>
                   중지하기
                 </Button>
@@ -136,7 +87,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
             </div>
 
             <div className="space-y-6">
-              {object.description && (
+              {recipe?.description && (
                 <BlurFade>
                   {url ? (
                     <a
@@ -148,7 +99,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                       <Image
                         priority
                         src={getThumbnailUrl(url)}
-                        alt={object.title || "레시피 썸네일"}
+                        alt={recipe.title || "레시피 썸네일"}
                         width={500}
                         height={300}
                         className="w-full rounded-lg"
@@ -165,7 +116,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                         <Image
                           priority
                           src={imgSrc}
-                          alt={object.title || "레시피 썸네일"}
+                          alt={recipe.title || "레시피 썸네일"}
                           width={500}
                           height={300}
                           className="w-full rounded-lg"
@@ -175,7 +126,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                     )
                   )}
                   <p className="rounded-lg bg-gray-50 p-4 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
-                    {object.description}
+                    {recipe.description}
                   </p>
                 </BlurFade>
               )}
@@ -186,7 +137,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                     재료
                   </h3>
                   <div className="mt-2 grid grid-cols-2 gap-2">
-                    {object.ingredients?.map(
+                    {recipe?.ingredients?.map(
                       (ingredient: any, index: number) => (
                         <BlurFade
                           key={index}
@@ -216,7 +167,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                     조리 방법
                   </h3>
                   <ol className="mt-2 space-y-3">
-                    {object.steps?.map((step: any, index: number) => (
+                    {recipe?.steps?.map((step: any, index: number) => (
                       <BlurFade key={index} delay={index * 0.1} direction="up">
                         <li className="flex gap-3 rounded-md bg-gray-50 p-3 dark:bg-gray-800">
                           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
@@ -232,14 +183,14 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                 </BlurFade>
               </div>
 
-              {object.tips && object.tips.length > 0 && (
+              {recipe?.tips && recipe.tips.length > 0 && (
                 <div className="space-y-4">
                   <BlurFade>
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                       요리 팁
                     </h3>
                     <ul className="mt-2 space-y-2">
-                      {object.tips.map((tip: any, index: number) => (
+                      {recipe.tips.map((tip: any, index: number) => (
                         <BlurFade
                           key={index}
                           delay={index * 0.05}
@@ -286,7 +237,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                   disabled={isGenerating}
                 />
                 <Button
-                  onClick={() => handleCreateRecipe(url)}
+                  onClick={() => createRecipe(url)}
                   disabled={!url || isGenerating}
                   className="mr-1 rounded-full p-2"
                   variant="ghost"
@@ -308,12 +259,6 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                 </Button>
               </div>
             </div>
-
-            {error && (
-              <div className="mt-3 rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
-                {error}
-              </div>
-            )}
 
             <RecipeSuggestions
               onSelectVideo={handleSelectVideo}
