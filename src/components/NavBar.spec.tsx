@@ -65,17 +65,17 @@ describe("NavBar", () => {
       });
     });
 
-    it("마이페이지 메뉴가 보인다", async () => {
+    it("내 정보 메뉴가 보인다", async () => {
       await render(<NavBar />);
 
-      const myPageMenu = screen.getByText("마이페이지");
+      const myPageMenu = screen.getByText("내 정보");
       expect(myPageMenu).toBeInTheDocument();
     });
 
-    it("마이페이지를 클릭하고 로그아웃을 확인하면 로그아웃 함수가 호출된다", async () => {
+    it("내 정보를 클릭하고 로그아웃을 확인하면 로그아웃 함수가 호출된다", async () => {
       const { user } = await render(<NavBar />);
 
-      const myPageButton = screen.getByText("마이페이지");
+      const myPageButton = screen.getByText("내 정보");
       await user.click(myPageButton);
 
       const confirmButton = await screen.findByRole("button", { name: "네" });

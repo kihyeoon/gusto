@@ -52,3 +52,37 @@ export function isDeepEqualData(a: any, b: any): boolean {
 
   return false;
 }
+
+/**
+ * 배열을 무작위로 섞는 함수
+ */
+export const shuffleArray = <T>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
+/**
+ * 배열에서 랜덤하게 n개 요소 선택
+ */
+export const getRandomItems = <T>(array: T[], count: number): T[] =>
+  array.length <= count ? [...array] : shuffleArray([...array]).slice(0, count);
+
+/**
+ * 배열에서 중복 요소 제거
+ */
+export const removeDuplicates = <T>(array: T[]): T[] => [...new Set(array)];
+
+/**
+ * 문자열 배열을 OR 연산자(|)로 연결하는 함수
+ */
+export const buildOrQuery = (keywords: string[]): string => keywords.join("|");
+
+/**
+ * 배열에서 랜덤한 요소 하나 선택
+ */
+export const selectRandomOption = <T>(options: T[]): T =>
+  options[Math.floor(Math.random() * options.length)];

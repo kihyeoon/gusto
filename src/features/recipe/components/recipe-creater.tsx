@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { TextShimmer } from "@/components/ui/text-shimmer";
 
 import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
+import RecipeSuggestions from "@/features/recipe/components/recipe-suggestions";
 import { useObjectStream } from "@/features/recipe/hooks/use-object-stream";
 import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
@@ -53,14 +54,14 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
   /**
    * URL에서 스크립트 가져오고 레시피 생성 요청
    */
-  const handleCreateRecipe = async () => {
-    if (!url) return;
+  const handleCreateRecipe = async (recipeUrl: string) => {
+    if (!recipeUrl) return;
 
     try {
       setError(null);
       setIsScriptLoading(true);
 
-      const videoId = getVideoId(url);
+      const videoId = getVideoId(recipeUrl);
       if (!videoId) {
         setError("올바른 YouTube URL을 입력해주세요.");
         setIsScriptLoading(false);
@@ -83,7 +84,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
 
       const requestData: RecipeInput = {
         script: script.join("\n"),
-        url: url,
+        url: recipeUrl,
         id: newRecipeId,
       };
 
@@ -98,8 +99,13 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !isGenerating && url) {
-      handleCreateRecipe();
+      handleCreateRecipe(url);
     }
+  };
+
+  const handleSelectVideo = (videoUrl: string) => {
+    setUrl(videoUrl);
+    handleCreateRecipe(videoUrl);
   };
 
   const isGenerating = isScriptLoading || isLoading;
@@ -179,7 +185,7 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                   <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
                     재료
                   </h3>
-                  <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <div className="mt-2 grid grid-cols-2 gap-2">
                     {object.ingredients?.map(
                       (ingredient: any, index: number) => (
                         <BlurFade
@@ -269,10 +275,6 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
             <h2 className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
               어떤 레시피를 알고 싶으세요?
             </h2>
-            <p className="mb-4 text-gray-600 dark:text-gray-300">
-              YouTube 영상의 URL을 입력하면 레시피를 요약해 드릴게요.
-            </p>
-
             <div className="relative rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-center py-2">
                 <Input
@@ -284,29 +286,25 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                   disabled={isGenerating}
                 />
                 <Button
-                  onClick={handleCreateRecipe}
+                  onClick={() => handleCreateRecipe(url)}
                   disabled={!url || isGenerating}
                   className="mr-1 rounded-full p-2"
                   variant="ghost"
                 >
-                  {isGenerating ? (
-                    <ReloadIcon className="h-5 w-5 animate-spin text-gray-500 dark:text-gray-400" />
-                  ) : (
-                    <svg
-                      className="h-5 w-5 text-gray-500 dark:text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  )}
+                  <svg
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
                 </Button>
               </div>
             </div>
@@ -316,6 +314,11 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
                 {error}
               </div>
             )}
+
+            <RecipeSuggestions
+              onSelectVideo={handleSelectVideo}
+              isLoading={isGenerating}
+            />
           </div>
         )}
       </div>

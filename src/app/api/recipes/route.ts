@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
               tips: completion.object.tips,
             };
             await createRecipe(recipeFromAI, url, userId, id);
-            console.log("레시피가 성공적으로 저장되었습니다.");
           }
         } catch (error) {
           console.error("레시피 저장 중 오류 발생:", error);
