@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next/types";
 
-import RecipeCreater from "@/features/recipe/components/recipe-creater";
+import RecipeCreator from "@/features/recipe/components/recipe-creator";
 import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {
@@ -34,7 +34,7 @@ export default async function RecipePage(props: Props) {
     <>
       <div className="space-y-8">
         {/* <RecipeDetailContainer recipe={recipe} /> */}
-        <RecipeCreater initialRecipe={recipe} />
+        <RecipeCreator initialRecipe={recipe} />
       </div>
     </>
   );

@@ -19,7 +19,7 @@ interface RecipeCreaterProps {
   initialRecipe?: Recipe;
 }
 
-const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
+const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
   const [url, setUrl] = useState("");
   const { toast } = useToast();
 
@@ -271,4 +271,4 @@ const RecipeCreater = ({ initialRecipe }: RecipeCreaterProps) => {
   );
 };
 
-export default RecipeCreater;
+export default RecipeCreator;

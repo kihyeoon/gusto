@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/features/auth/services/auth";
-import RecipeCreater from "@/features/recipe/components/recipe-creater";
+import RecipeCreator from "@/features/recipe/components/recipe-creator";
 
 export default async function HomePage() {
   const session = await auth();
@@ -11,5 +11,5 @@ export default async function HomePage() {
     redirect("/auth/signIn");
   }
 
-  return <RecipeCreater />;
+  return <RecipeCreator />;
 }
