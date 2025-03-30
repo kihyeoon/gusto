@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ interface RecipeCreaterProps {
 const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
   const [url, setUrl] = useState("");
   const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     recipe,
@@ -44,6 +45,12 @@ const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
       });
     }
   }, [error, toast]);
+
+  useEffect(() => {
+    if (showInputSection && inputRef.current && !isGenerating) {
+      inputRef.current.focus();
+    }
+  }, [showInputSection, isGenerating]);
 
   const initialUrl = initialRecipe?.url;
 
@@ -229,6 +236,7 @@ const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
             <div className="relative rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-center py-2">
                 <Input
+                  ref={inputRef}
                   className="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
