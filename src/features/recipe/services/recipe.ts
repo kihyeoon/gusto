@@ -3,7 +3,11 @@ import { groq } from "next-sanity";
 
 import { client, urlFor } from "@/services/sanity";
 
-import { Recipe, RecipeFromAI, RecipePreview } from "@/features/recipe/models/recipe";
+import {
+  Recipe,
+  RecipeFromAI,
+  RecipePreview,
+} from "@/features/recipe/models/recipe";
 
 const recipeProjection = groq`
   ...,
@@ -38,7 +42,6 @@ export async function getAllRecipes() {
       | order(_createdAt desc) {${recipePreviewProjection}}
       `,
     {},
-    { cache: "no-store" },
   );
 }
 
@@ -49,7 +52,6 @@ export async function getRecipesOf(email: string, sort: Sort = "desc") {
       | order(_createdAt ${sort}) {${recipePreviewProjection}}
     `,
     { email },
-    { cache: "no-store" },
   );
 }
 
@@ -59,7 +61,6 @@ export async function getRecipeById(id: string) {
       *[_type == "recipe" && _id == "${id}"][0] {${recipeProjection}}
     `,
     { id },
-    { cache: "no-store" },
   );
 }
 
@@ -67,6 +68,7 @@ export async function createRecipe(
   recipe: RecipeFromAI,
   url: string,
   userId: string,
+  customId?: string,
 ) {
   const { ingredients, steps } = recipe;
 
@@ -92,6 +94,7 @@ export async function createRecipe(
   const newRecipe = {
     ...recipe,
     _type: "recipe",
+    _id: customId,
     ingredients: createdIngredients.map((id, index) => ({
       name: {
         _type: "reference",

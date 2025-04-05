@@ -15,6 +15,10 @@ export const errorMessages = {
     message: "레시피 삭제에 실패했습니다.",
     description: "다시 시도해주세요.",
   },
+  CANNOT_FETCH_SUGGESTIONS: {
+    message: "추천 레시피를 가져오는 데 실패했습니다.",
+    description: "다시 시도해주세요.",
+  },
 } as const;
 
 export const deleteRecipePrompt = {
@@ -25,3 +29,4 @@ export const deleteRecipePrompt = {
 } as const;
 
 export const RECIPE_QUERY_KEY = ["recipes"] as const;
+export const SUGGESTIONS_QUERY_KEY = ["recipe-suggestions"] as const;

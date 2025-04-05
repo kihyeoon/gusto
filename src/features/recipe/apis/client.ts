@@ -1,7 +1,10 @@
+import { errorMessages } from "@/features/recipe/libs/constants";
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe, RecipePreview } from "@/features/recipe/models/recipe";
+import { YouTubeVideo } from "@/features/recipe/models/youtube";
 
 import { del, get, post } from "@/libs/api";
+import { ApiException } from "@/libs/exceptions";
 
 export const getRecipes = async () => {
   return await get<RecipePreview[]>("/api/recipes");
@@ -28,4 +31,25 @@ export const createRecipe = async (
 export const deleteRecipe = async (id: string) => {
   await del(`/api/recipes/${id}`);
   return id;
+};
+
+export const getSuggestions = async (query: string = "레시피") => {
+  return await get<YouTubeVideo[]>(
+    `/api/recipes/suggestions?query=${encodeURIComponent(query)}`,
+  );
+};
+
+/**
+ * 영상에서 스크립트 가져오기
+ */
+export const getScript = async (videoId: string): Promise<string[]> => {
+  const response = await get<string[]>(
+    `/api/recipes/script?videoId=${videoId}`,
+  );
+
+  if (!response || response.length === 0) {
+    throw new ApiException(errorMessages.CANNOT_FIND_RECIPE, 404);
+  }
+
+  return response;
 };

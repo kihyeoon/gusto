@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata, Viewport } from "next";
 import { Open_Sans } from "next/font/google";
+import type { Metadata, Viewport } from "next/types";
 
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
@@ -67,10 +67,10 @@ export default function RootLayout({
         )}
       >
         <Providers>
-          <NavBar />
-          <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center bg-neutral-100">
+          <main className="mx-auto flex w-full max-w-md flex-[1_1_0] flex-col items-center bg-neutral-100 pb-16">
             {children}
           </main>
+          <NavBar />
           <Toaster />
         </Providers>
         <Analytics />

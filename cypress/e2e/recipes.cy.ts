@@ -3,13 +3,13 @@ beforeEach(() => {
 });
 
 describe("RecipeList", () => {
-  it("레시피 목록 페이지에 접속한다.", () => {
-    cy.assertUrl("/");
+  beforeEach(() => {
+    cy.visit("/recipe");
   });
 
-  it("입력 필드에 텍스트를 입력하면 해당 텍스트가 표시된다.", () => {
-    cy.findByRole("textbox").type("test");
-    cy.findByRole("textbox").should("have.value", "test");
+  it("레시피 목록 페이지에 접속한다.", () => {
+    cy.assertUrl("/recipe");
+    cy.findByRole("heading", { name: "나의 레시피 목록" }).should("exist");
   });
 
   it("레시피를 클릭하면 해당 레시피의 상세 페이지로 이동한다.", () => {
@@ -34,8 +34,25 @@ describe("RecipeList", () => {
       cy.findAllByRole("listitem").should("have.length", beforeCount - 1);
     });
   });
+});
 
-  // 레시피 생성 테스트
+describe("RecipeCreation", () => {
+  beforeEach(() => {
+    cy.visit("/");
+  });
+
+  it("레시피 생성 페이지에 접속한다.", () => {
+    cy.assertUrl("/");
+    cy.findByRole("heading", { name: "어떤 레시피를 알고 싶으세요?" }).should(
+      "exist",
+    );
+  });
+
+  it("입력 필드에 텍스트를 입력하면 해당 텍스트가 표시된다.", () => {
+    cy.findByRole("textbox").type("test");
+    cy.findByRole("textbox").should("have.value", "test");
+  });
+
   it("레시피를 생성하면 생성된 레시피 상세 페이지로 이동한다.", () => {
     cy.intercept("POST", "/api/recipes/script", {
       statusCode: 200,
@@ -46,34 +63,49 @@ describe("RecipeList", () => {
         "먹더라고요 첫 번째 비법은 된장을",
         "...",
       ],
-    });
+    }).as("getScript");
 
-    cy.intercept("POST", "/api/recipes/ai", {
+    cy.intercept("POST", "/api/recipes", {
       statusCode: 200,
       body: {
-        _createdAt: "2025-01-30T11:55:16Z",
         _id: "Bd3mEndv7RL1hAxiasvV8R",
-        _rev: "Bd3mEndv7RL1hAxiasvV3E",
-        _type: "recipe",
-        _updatedAt: "2025-01-30T11:55:16Z",
-        author: {
-          _ref: "test-id",
-          _type: "reference",
-        },
-        description: "볶아서 진한 맛을 내는 된장찌개 레시피입니다.",
-        ingredients: [],
-        steps: [],
-        tags: [],
-        tips: [],
+        id: "Bd3mEndv7RL1hAxiasvV8R",
         title: "된장찌개",
-        url: "https://www.youtube.com/watch?v=8QlrdE4OXgM&list=PLCkJu0mLHv5aWDWlO-YOqEe256lXPoKqY&index=29",
+        description: "볶아서 진한 맛을 내는 된장찌개 레시피입니다.",
+        url: "https://www.youtube.com/watch?v=8QlrdE4OXgM",
+        ingredients: [
+          { name: "된장", amount: "3큰술" },
+          { name: "양파", amount: "1/2개" },
+          { name: "대파", amount: "1대" },
+          { name: "물", amount: "500ml" },
+          { name: "고추장", amount: "1큰술" },
+          { name: "청양고추", amount: "2개" },
+          { name: "두부", amount: "1/2모" }
+        ],
+        steps: [
+          { description: "물을 넣고 끓인다." },
+          { description: "된장을 넣고 끓인다." },
+          { description: "양파를 넣고 끓인다." },
+          { description: "대파를 넣고 끓인다." },
+          { description: "고추장을 넣고 끓인다." },
+          { description: "청양고추를 넣고 끓인다." },
+          { description: "두부를 넣고 끓인다." }
+        ],
+        tags: ["된장", "찌개", "한식"],
+        tips: [
+          "된장을 볶으면 더 진한 맛이 납니다.",
+          "고기를 넣어도 맛있습니다."
+        ],
+        createdAt: new Date().toISOString(),
+        author: "test-id"
       },
-    });
+    }).as("createRecipe");
 
     cy.findByRole("textbox").type(
-      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://www.youtube.com/watch?v=8QlrdE4OXgM",
     );
-    cy.findByRole("button", { name: "AI로 레시피 만들기" }).click();
+
+    cy.get("button[class*='rounded-full']").click();
 
     cy.url().should("include", "/recipe/");
   });

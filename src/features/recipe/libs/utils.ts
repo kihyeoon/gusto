@@ -17,3 +17,12 @@ export const getVideoId = (url: string) => {
   }
   return getQueryParam(urlObj, "v");
 };
+
+/**
+ * 유튜브 비디오 썸네일 URL 가져오기
+ */
+export function getThumbnailUrl(url: string): string {
+  const videoId = getVideoId(url);
+  if (!videoId) return "";
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+}

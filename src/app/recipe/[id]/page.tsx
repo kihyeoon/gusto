@@ -1,7 +1,7 @@
-import { type Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Metadata } from "next/types";
 
-import RecipeDetailContainer from "@/features/recipe/components/detail/RecipeDetailContainer";
+import RecipeCreator from "@/features/recipe/components/recipe-creator";
 import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {
@@ -24,9 +24,7 @@ export const metadata: Metadata = {
 export default async function RecipePage(props: Props) {
   const params = await props.params;
 
-  const {
-    id
-  } = params;
+  const { id } = params;
 
   const recipe = await getRecipeById(id);
 
@@ -34,7 +32,10 @@ export default async function RecipePage(props: Props) {
 
   return (
     <>
-      <RecipeDetailContainer recipe={recipe} />
+      <div className="space-y-8">
+        {/* <RecipeDetailContainer recipe={recipe} /> */}
+        <RecipeCreator initialRecipe={recipe} />
+      </div>
     </>
   );
 }

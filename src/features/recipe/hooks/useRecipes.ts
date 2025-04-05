@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import { createRecipe, deleteRecipe, getRecipes } from "@/features/recipe/apis";
+import {
+  createRecipe,
+  deleteRecipe,
+  getRecipes,
+} from "@/features/recipe/apis/client";
 import {
   RECIPE_QUERY_KEY,
   errorMessages,

@@ -20,6 +20,12 @@ export interface RecipeFromAI {
   tips: string[] | null;
 }
 
+export interface RecipeInput {
+  script: string;
+  url: string;
+  id: string;
+}
+
 export type RecipePreview = Pick<
   Recipe,
   "id" | "title" | "description" | "tags" | "url"
