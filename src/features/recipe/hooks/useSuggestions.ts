@@ -15,7 +15,9 @@ interface UseSuggestionsProps {
   query?: string;
 }
 
-const STALE_TIME_MS = 60 * 1000; // 1분
+// 캐시가 절대 만료되지 않도록 설정
+const STALE_TIME_MS = Infinity;
+const CACHE_TIME_MS = Infinity;
 
 export default function useSuggestions({
   query = "레시피",
@@ -25,12 +27,18 @@ export default function useSuggestions({
   const {
     data: suggestions = [],
     isLoading,
+    isFetching,
     error,
+    refetch,
   } = useQuery({
     queryKey: [...SUGGESTIONS_QUERY_KEY, query],
     queryFn: () => getSuggestions(query),
     staleTime: STALE_TIME_MS,
+    gcTime: CACHE_TIME_MS,
     retry: 1,
+    refetchOnWindowFocus: false, // 창 포커스 시 리페치 비활성화
+    refetchOnMount: false, // 마운트 시 리페치 비활성화
+    refetchOnReconnect: false, // 다시 연결 시 리페치 비활성화
   });
 
   useEffect(() => {
@@ -57,7 +65,8 @@ export default function useSuggestions({
 
   return {
     suggestions,
-    isLoading,
+    isLoading: isLoading || isFetching,
     error,
+    refetch,
   };
 }

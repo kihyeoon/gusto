@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Button } from "@/components/ui/button";
+import { RefreshButton } from "@/components/ui/refresh-button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import useSuggestions from "@/features/recipe/hooks/useSuggestions";
@@ -18,13 +19,27 @@ const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
     suggestions,
     isLoading: suggestionsLoading,
     error,
+    refetch,
   } = useSuggestions();
+
+  const handleRefresh = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    refetch();
+  };
 
   return (
     <div className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-background p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900/80">
-      <h3 className="mb-4 text-base font-medium text-gray-800 dark:text-gray-200">
-        추천 레시피 영상
-      </h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-base font-medium text-gray-800 dark:text-gray-200">
+          추천 레시피 영상
+        </h3>
+        <RefreshButton 
+          isLoading={suggestionsLoading}
+          onClick={handleRefresh}
+          size="md"
+        />
+      </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
         영상을 선택하면 레시피를 요약해 드릴게요.
       </p>
