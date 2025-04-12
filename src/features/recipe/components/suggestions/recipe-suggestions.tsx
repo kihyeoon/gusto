@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import useSuggestions from "@/features/recipe/hooks/useSuggestions";
+import useSuggestions from "@/features/recipe/hooks/use-suggestions";
 
 interface SuggestionsProps {
   onSelectVideo: (url: string) => void;

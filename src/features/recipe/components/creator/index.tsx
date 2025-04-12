@@ -12,11 +12,11 @@ import type { Recipe } from "@/features/recipe/models/recipe";
 import RecipeInputSection from "./recipe-input-section";
 import RecipeLoadingState from "./recipe-loading-state";
 
-interface RecipeCreaterProps {
+interface RecipeCreatorProps {
   initialRecipe?: Recipe;
 }
 
-const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
+export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
   const [url, setUrl] = useState("");
   const { toast } = useToast();
 
@@ -91,6 +91,4 @@ const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
       </div>
     </div>
   );
-};
-
-export default RecipeCreator;
+}

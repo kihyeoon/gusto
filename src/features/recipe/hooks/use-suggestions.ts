@@ -13,6 +13,7 @@ import { ApiException, CustomException } from "@/libs/exceptions";
 
 interface UseSuggestionsProps {
   query?: string;
+  count?: number;
 }
 
 // 캐시가 절대 만료되지 않도록 설정
@@ -21,6 +22,7 @@ const CACHE_TIME_MS = Infinity;
 
 export default function useSuggestions({
   query = "레시피",
+  count = 5,
 }: UseSuggestionsProps = {}) {
   const { toast } = useToast();
 
@@ -32,7 +34,7 @@ export default function useSuggestions({
     refetch,
   } = useQuery({
     queryKey: [...SUGGESTIONS_QUERY_KEY, query],
-    queryFn: () => getSuggestions(query),
+    queryFn: () => getSuggestions(query, count),
     staleTime: STALE_TIME_MS,
     gcTime: CACHE_TIME_MS,
     retry: 1,

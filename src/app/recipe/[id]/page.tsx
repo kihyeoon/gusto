@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next/types";
 
-import RecipeCreator from "@/features/recipe/components/creator/recipe-creator";
+import RecipeCreator from "@/features/recipe/components/creator";
 import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {
@@ -30,12 +30,5 @@ export default async function RecipePage(props: Props) {
 
   if (!recipe) notFound();
 
-  return (
-    <>
-      <div className="space-y-8">
-        {/* <RecipeDetailContainer recipe={recipe} /> */}
-        <RecipeCreator initialRecipe={recipe} />
-      </div>
-    </>
-  );
+  return <RecipeCreator initialRecipe={recipe} />;
 }
