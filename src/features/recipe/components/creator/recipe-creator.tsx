@@ -4,12 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import RecipeInputSection from "@/features/recipe/components/recipe-input-section";
-import RecipeLoadingState from "@/features/recipe/components/recipe-loading-state";
-import RecipeResult from "@/features/recipe/components/recipe-result";
+import RecipeResult from "@/features/recipe/components/result";
 import { useRecipeCreation } from "@/features/recipe/hooks/use-recipe-creation";
 import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import type { Recipe } from "@/features/recipe/models/recipe";
+
+import RecipeInputSection from "./recipe-input-section";
+import RecipeLoadingState from "./recipe-loading-state";
 
 interface RecipeCreaterProps {
   initialRecipe?: Recipe;

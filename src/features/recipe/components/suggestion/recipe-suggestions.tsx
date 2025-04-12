@@ -34,7 +34,7 @@ const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
         <h3 className="text-base font-medium text-gray-800 dark:text-gray-200">
           추천 레시피 영상
         </h3>
-        <RefreshButton 
+        <RefreshButton
           isLoading={suggestionsLoading}
           onClick={handleRefresh}
           size="md"

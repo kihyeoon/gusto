@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next/types";
 
-import RecipeCreator from "@/features/recipe/components/recipe-creator";
+import RecipeCreator from "@/features/recipe/components/creator/recipe-creator";
 import { getRecipeById } from "@/features/recipe/services/recipe";
 
 interface Props {

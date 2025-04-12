@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/features/auth/services/auth";
-import RecipeCreator from "@/features/recipe/components/recipe-creator";
+import RecipeCreator from "@/features/recipe/components/creator/recipe-creator";
 
 export default async function HomePage() {
   const session = await auth();
