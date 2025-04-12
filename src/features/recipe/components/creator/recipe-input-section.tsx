@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import RecipeSuggestions from "../suggestions/recipe-suggestions";
+import RecipeSuggestions from "../suggestions";
 
 interface RecipeInputSectionProps {
   url: string;

@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
 
-import TextContent from "./TextContent";
+import RecipeListSkeleton from "./recipe-list-skeleton";
 
 const meta = {
-  title: "recipe/textContent",
-  component: TextContent,
+  title: "recipe/skeleton/list",
+  component: RecipeListSkeleton,
   parameters: {
     layout: "centered",
   },
@@ -18,15 +17,11 @@ const meta = {
     ),
   ],
   argTypes: {},
-} satisfies Meta<typeof TextContent>;
+} satisfies Meta<typeof RecipeListSkeleton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {
-    value: "",
-    onChange: fn(),
-    onDelete: fn(),
-  },
+  args: {},
 };

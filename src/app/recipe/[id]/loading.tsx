@@ -1,4 +1,4 @@
-import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
+import RecipeSkeleton from "@/features/recipe/components/detail/recipe-skeleton";
 
 export default function Loading() {
   return (

@@ -14,7 +14,10 @@ interface SuggestionsProps {
   isLoading: boolean;
 }
 
-const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
+export default function RecipeSuggestions({
+  onSelectVideo,
+  isLoading,
+}: SuggestionsProps) {
   const {
     suggestions,
     isLoading: suggestionsLoading,
@@ -106,6 +109,4 @@ const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
       )}
     </div>
   );
-};
-
-export default RecipeSuggestions;
+}

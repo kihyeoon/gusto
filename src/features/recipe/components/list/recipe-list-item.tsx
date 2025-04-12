@@ -8,7 +8,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import DeleteButton from "@/components/DeleteButton";
 import { Button } from "@/components/ui/button";
 
-import useImgSrc from "@/features/recipe/hooks/useImgSrc";
+import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { deleteRecipePrompt } from "@/features/recipe/libs/constants";
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { RecipePreview } from "@/features/recipe/models/recipe";

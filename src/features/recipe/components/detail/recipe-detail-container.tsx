@@ -7,8 +7,8 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import RecipeEdit from "@/features/recipe/components/detail/RecipeEdit";
-import RecipeView from "@/features/recipe/components/detail/RecipeView";
+import RecipeEdit from "@/features/recipe/components/detail/recipe-edit";
+import RecipeView from "@/features/recipe/components/detail/recipe-view";
 import { type Recipe } from "@/features/recipe/models/recipe";
 
 export default function RecipeDetailContainer({ recipe }: { recipe: Recipe }) {

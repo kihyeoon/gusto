@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI } from "@/features/recipe/models/recipe";
-import { RecipeAIService } from "@/features/recipe/services/openAI";
+import { RecipeAIService } from "@/features/recipe/services/open-ai";
 import { createRecipe } from "@/features/recipe/services/recipe";
 
 import { getRecipeSample } from "@/app/api/recipes/ai/sample";

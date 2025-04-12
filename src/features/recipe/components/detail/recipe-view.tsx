@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import useImgSrc from "@/features/recipe/hooks/useImgSrc";
+import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe } from "@/features/recipe/models/recipe";
 

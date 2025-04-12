@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 import RecipeResult from "@/features/recipe/components/result";
+import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { useRecipeCreation } from "@/features/recipe/hooks/use-recipe-creation";
-import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import type { Recipe } from "@/features/recipe/models/recipe";
 
 import RecipeInputSection from "./recipe-input-section";
