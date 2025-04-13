@@ -4,18 +4,19 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import RecipeInputSection from "@/features/recipe/components/recipe-input-section";
-import RecipeLoadingState from "@/features/recipe/components/recipe-loading-state";
-import RecipeResult from "@/features/recipe/components/recipe-result";
+import RecipeResult from "@/features/recipe/components/result";
+import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { useRecipeCreation } from "@/features/recipe/hooks/use-recipe-creation";
-import useImgSrc from "@/features/recipe/hooks/useImgSrc";
 import type { Recipe } from "@/features/recipe/models/recipe";
 
-interface RecipeCreaterProps {
+import RecipeInputSection from "./recipe-input-section";
+import RecipeLoadingState from "./recipe-loading-state";
+
+interface RecipeCreatorProps {
   initialRecipe?: Recipe;
 }
 
-const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
+export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
   const [url, setUrl] = useState("");
   const { toast } = useToast();
 
@@ -90,6 +91,4 @@ const RecipeCreator = ({ initialRecipe }: RecipeCreaterProps) => {
       </div>
     </div>
   );
-};
-
-export default RecipeCreator;
+}

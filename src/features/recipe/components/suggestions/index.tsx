@@ -7,14 +7,17 @@ import { Button } from "@/components/ui/button";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import useSuggestions from "@/features/recipe/hooks/useSuggestions";
+import useSuggestions from "@/features/recipe/hooks/use-suggestions";
 
 interface SuggestionsProps {
   onSelectVideo: (url: string) => void;
   isLoading: boolean;
 }
 
-const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
+export default function RecipeSuggestions({
+  onSelectVideo,
+  isLoading,
+}: SuggestionsProps) {
   const {
     suggestions,
     isLoading: suggestionsLoading,
@@ -34,7 +37,7 @@ const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
         <h3 className="text-base font-medium text-gray-800 dark:text-gray-200">
           추천 레시피 영상
         </h3>
-        <RefreshButton 
+        <RefreshButton
           isLoading={suggestionsLoading}
           onClick={handleRefresh}
           size="md"
@@ -106,6 +109,4 @@ const RecipeSuggestions = ({ onSelectVideo, isLoading }: SuggestionsProps) => {
       )}
     </div>
   );
-};
-
-export default RecipeSuggestions;
+}

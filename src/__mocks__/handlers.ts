@@ -1,7 +1,7 @@
 import response from "@/__mocks__/response";
 import { HttpResponse, http } from "msw";
 
-import { apiRoutes } from "@/libs/apiRoutes";
+import { apiRoutes } from "@/libs/api-routes";
 
 const API_DOMAIN = "http://localhost:3000";
 

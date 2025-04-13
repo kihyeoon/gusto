@@ -1,6 +1,6 @@
 import { TextShimmer } from "@/components/ui/text-shimmer";
 
-import RecipeSkeleton from "@/features/recipe/components/detail/RecipeSkeleton";
+import RecipeSkeleton from "@/features/recipe/components/detail/recipe-skeleton";
 
 interface RecipeLoadingStateProps {
   isGenerating: boolean;

@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/features/auth/services/auth";
 import { getRecipesServer } from "@/features/recipe/apis/server";
-import RecipeListContainer from "@/features/recipe/components/list/RecipeListContainer";
+import RecipeListContainer from "@/features/recipe/components/list/recipe-list-container";
 import { RECIPE_QUERY_KEY } from "@/features/recipe/libs/constants";
 
-import { HydrationBoundary } from "@/libs/HydrationBoundary";
-import { getQueryClient } from "@/libs/getQueryClient";
+import { getQueryClient } from "@/libs/get-query-client";
+import { HydrationBoundary } from "@/libs/hydration-boundary";
 
 export default async function RecipePage() {
   const queryClient = getQueryClient();

@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import RecipeSuggestions from "./recipe-suggestions";
+import RecipeSuggestions from "../suggestions";
 
 interface RecipeInputSectionProps {
   url: string;
@@ -55,6 +55,7 @@ const RecipeInputSection = ({
             disabled={!url || isGenerating}
             className="mr-1 rounded-full p-2"
             variant="ghost"
+            aria-label="레시피 생성"
           >
             <svg
               className="h-5 w-5 text-gray-500 dark:text-gray-400"
@@ -62,6 +63,7 @@ const RecipeInputSection = ({
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"

@@ -3,7 +3,7 @@ import { expect, vi } from "vitest";
 
 import render from "@/libs/test/render";
 
-import RecipeList from "./RecipeList";
+import RecipeList from "./recipe-list";
 
 const mockPush = vi.fn();
 

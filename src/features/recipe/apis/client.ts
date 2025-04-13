@@ -33,9 +33,9 @@ export const deleteRecipe = async (id: string) => {
   return id;
 };
 
-export const getSuggestions = async (query: string = "레시피") => {
+export const getSuggestions = async (query: string, count: number) => {
   return await get<YouTubeVideo[]>(
-    `/api/recipes/suggestions?query=${encodeURIComponent(query)}`,
+    `/api/recipes/suggestions?query=${encodeURIComponent(query)}&count=${count}`,
   );
 };
 

@@ -1,8 +1,3 @@
-import type { RecipeSchema } from "@/features/recipe/libs/ai/schemas";
-import type { Recipe } from "@/features/recipe/models/recipe";
-
-import { DeepPartial } from "@/libs/deep-partial";
-
 import RecipeDescription from "./recipe-description";
 import RecipeHeader from "./recipe-header";
 import RecipeIngredients from "./recipe-ingredients";

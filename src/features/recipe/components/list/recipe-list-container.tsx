@@ -5,9 +5,9 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import RecipeList from "@/features/recipe/components/list/RecipeList";
-import RecipeListSkeleton from "@/features/recipe/components/list/RecipeListSkeleton";
-import useRecipes from "@/features/recipe/hooks/useRecipes";
+import RecipeList from "@/features/recipe/components/list/recipe-list";
+import RecipeListSkeleton from "@/features/recipe/components/list/recipe-list-skeleton";
+import useRecipes from "@/features/recipe/hooks/use-recipes";
 
 export default function RecipeListContainer() {
   const { recipes, isLoading, deleteRecipe } = useRecipes();

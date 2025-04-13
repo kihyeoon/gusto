@@ -80,7 +80,7 @@ describe("RecipeCreation", () => {
           { name: "물", amount: "500ml" },
           { name: "고추장", amount: "1큰술" },
           { name: "청양고추", amount: "2개" },
-          { name: "두부", amount: "1/2모" }
+          { name: "두부", amount: "1/2모" },
         ],
         steps: [
           { description: "물을 넣고 끓인다." },
@@ -89,15 +89,15 @@ describe("RecipeCreation", () => {
           { description: "대파를 넣고 끓인다." },
           { description: "고추장을 넣고 끓인다." },
           { description: "청양고추를 넣고 끓인다." },
-          { description: "두부를 넣고 끓인다." }
+          { description: "두부를 넣고 끓인다." },
         ],
         tags: ["된장", "찌개", "한식"],
         tips: [
           "된장을 볶으면 더 진한 맛이 납니다.",
-          "고기를 넣어도 맛있습니다."
+          "고기를 넣어도 맛있습니다.",
         ],
         createdAt: new Date().toISOString(),
-        author: "test-id"
+        author: "test-id",
       },
     }).as("createRecipe");
 
@@ -105,7 +105,7 @@ describe("RecipeCreation", () => {
       "https://www.youtube.com/watch?v=8QlrdE4OXgM",
     );
 
-    cy.get("button[class*='rounded-full']").click();
+    cy.findByRole("button", { name: "레시피 생성" }).click();
 
     cy.url().should("include", "/recipe/");
   });

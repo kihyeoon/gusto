@@ -1,4 +1,4 @@
-import { apiRoutes } from "@/libs/apiRoutes";
+import { apiRoutes } from "@/libs/api-routes";
 
 import recipe from "./recipe.json";
 import recipes from "./recipes.json";

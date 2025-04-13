@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 
-import IngredientContent from "./IngredientContent";
+import TextContent from "./text-content";
 
 const meta = {
-  title: "recipe/ingredientContent",
-  component: IngredientContent,
+  title: "recipe/textContent",
+  component: TextContent,
   parameters: {
     layout: "centered",
   },
@@ -17,16 +18,15 @@ const meta = {
     ),
   ],
   argTypes: {},
-} satisfies Meta<typeof IngredientContent>;
+} satisfies Meta<typeof TextContent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    name: "마늘",
-    amount: "1알",
-    onChange: () => {},
-    onDelete: () => {},
+    value: "",
+    onChange: fn(),
+    onDelete: fn(),
   },
 };

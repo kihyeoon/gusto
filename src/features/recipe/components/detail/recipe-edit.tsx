@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import CommentForm from "@/features/recipe/components/detail/CommentForm";
-import IngredientContent from "@/features/recipe/components/detail/IngredientContent";
-import TextContent from "@/features/recipe/components/detail/TextContent";
+import CommentForm from "@/features/recipe/components/detail/comment-form";
+import IngredientContent from "@/features/recipe/components/detail/ingredient-content";
+import TextContent from "@/features/recipe/components/detail/text-content";
 import { Ingredient, Recipe } from "@/features/recipe/models/recipe";
 
 interface Props {
