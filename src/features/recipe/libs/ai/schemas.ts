@@ -19,4 +19,8 @@ export const recipeSchema = z.object({
   tips: z.array(z.string()).nullable(),
 });
 
+export const isRecipeSchema = z.object({
+  isRecipe: z.boolean().describe("입력된 스크립트가 요리 레시피에 관한 내용인지 여부"),
+});
+
 export type RecipeSchema = z.infer<typeof recipeSchema>;

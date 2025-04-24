@@ -35,8 +35,8 @@ export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
   useEffect(() => {
     if (error) {
       toast({
-        title: "레시피 생성 오류",
-        description: error,
+        title: error.message || "레시피 생성 오류",
+        description: error.description,
         variant: "destructive",
       });
     }

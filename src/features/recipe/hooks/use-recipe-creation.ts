@@ -11,7 +11,12 @@ import {
 import { getThumbnailUrl, getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe, RecipeInput } from "@/features/recipe/models/recipe";
 
-import { ApiException, CustomException } from "@/libs/exceptions";
+import { fetchWithApiException } from "@/libs/api";
+import {
+  ApiErrorSchema,
+  ApiException,
+  CustomException,
+} from "@/libs/exceptions";
 import { generateUUID } from "@/libs/utils";
 
 interface UseRecipeCreationOptions {
@@ -22,7 +27,7 @@ export function useRecipeCreation({
   initialRecipe,
 }: UseRecipeCreationOptions = {}) {
   const [isScriptLoading, setIsScriptLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiErrorSchema | null>(null);
   const queryClient = useQueryClient();
 
   const {
@@ -33,24 +38,33 @@ export function useRecipeCreation({
   } = useObjectStream({
     api: "/api/recipes",
     schema: recipeSchema,
+    fetch: fetchWithApiException,
     onFinish: (_) => {
       queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY });
     },
     initialValue: initialRecipe,
     onError: (err) => {
-      console.error("AI 레시피 생성 중 오류 발생:", err);
-      setError(errorMessages.CANNOT_CREAT_RECIPE.message);
+      setErrorByType(err);
     },
   });
 
-  // 에러 타입에 따른 에러 메시지 설정
+  /**
+   * 에러 타입에 따른 구조화된 에러 메시지 설정
+   */
   const setErrorByType = (err: unknown) => {
+    console.error("Handling error:", err);
     if (err instanceof ApiException) {
-      setError(err.message);
+      setError({
+        message: err.message,
+        description: err.description,
+      });
     } else if (err instanceof CustomException) {
-      setError(err.message);
+      setError({ message: err.message });
     } else {
-      setError(errorMessages.CANNOT_CREAT_RECIPE.message);
+      setError({
+        message: errorMessages.CANNOT_CREAT_RECIPE.message,
+        description: errorMessages.CANNOT_CREAT_RECIPE.description,
+      });
     }
   };
 
@@ -64,7 +78,10 @@ export function useRecipeCreation({
       // 1. URL 검증
       const videoId = getVideoId(recipeUrl);
       if (!videoId) {
-        setError(errorMessages.INVALID_URL.message);
+        setError({
+          message: errorMessages.INVALID_URL.message,
+          description: errorMessages.INVALID_URL.description,
+        });
         return;
       }
 
@@ -85,7 +102,6 @@ export function useRecipeCreation({
       // 5. AI 레시피 생성 요청
       submit(requestData);
     } catch (err) {
-      console.error("레시피 생성 중 오류 발생:", err);
       setErrorByType(err);
     } finally {
       setIsScriptLoading(false);
