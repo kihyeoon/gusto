@@ -44,8 +44,12 @@ export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
 
   const initialUrl = initialRecipe?.url || "";
 
+  const thumbnailUrl =
+    initialRecipe?.thumbnailUrl ||
+    (!!recipe && initialUrl ? getThumbnailUrl(initialUrl) : "");
+
   const { imgSrc, handleImageError } = useImgSrc({
-    url: !!recipe && initialUrl ? getThumbnailUrl(initialUrl) : "",
+    url: thumbnailUrl,
     fallbackImg: "/images/placeholder.png",
   });
 

@@ -1,11 +1,16 @@
 import { openai } from "@ai-sdk/openai";
-import { streamObject, generateObject } from "ai";
+import { generateObject, streamObject } from "ai";
 import { NextRequest, NextResponse } from "next/server";
+
+import { uploadImageToS3 } from "@/services/s3-service";
 
 import { auth } from "@/features/auth/services/auth";
 import { withSessionUser } from "@/features/auth/services/session";
 import { recipePrompt } from "@/features/recipe/libs/ai/prompt";
-import { recipeSchema, isRecipeSchema } from "@/features/recipe/libs/ai/schemas";
+import {
+  isRecipeSchema,
+  recipeSchema,
+} from "@/features/recipe/libs/ai/schemas";
 import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI, RecipeInput } from "@/features/recipe/models/recipe";
 import { getRecipesOf, updateRecipe } from "@/features/recipe/services/recipe";
@@ -33,7 +38,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { script, url, id }: RecipeInput = await req.json();
+  const { script, url, id, thumbnailUrl }: RecipeInput = await req.json();
 
   const session = await auth();
   const userId = session?.user.id;
@@ -46,6 +51,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    let s3ThumbnailUrl: string | undefined;
+
+    if (thumbnailUrl) {
+      try {
+        s3ThumbnailUrl = await uploadImageToS3(thumbnailUrl, id);
+      } catch (error) {
+        console.error("썸네일 업로드 실패:", error);
+      }
+    }
+
     const { object: recipeCheck } = await generateObject({
       model: openai("gpt-4.1-nano"),
       schema: isRecipeSchema,
@@ -77,6 +92,7 @@ export async function POST(req: NextRequest) {
               ingredients: completion.object.ingredients,
               steps: completion.object.steps,
               tips: completion.object.tips,
+              thumbnailUrl: s3ThumbnailUrl || thumbnailUrl,
             };
             await createRecipe(recipeFromAI, url, userId, id);
           }

@@ -90,6 +90,7 @@ export default function RecipeSuggestions({
                       alt={video.title}
                       width={144}
                       height={80}
+                      unoptimized
                       className="h-20 w-36 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>

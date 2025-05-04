@@ -8,7 +8,11 @@ import {
   RECIPE_QUERY_KEY,
   errorMessages,
 } from "@/features/recipe/libs/constants";
-import { getThumbnailUrl, getVideoId } from "@/features/recipe/libs/utils";
+import {
+  getThumbnailUrl,
+  getThumbnailUrlByVideoId,
+  getVideoId,
+} from "@/features/recipe/libs/utils";
 import { Recipe, RecipeInput } from "@/features/recipe/models/recipe";
 
 import { fetchWithApiException } from "@/libs/api";
@@ -97,6 +101,7 @@ export function useRecipeCreation({
         script: script.join("\n"),
         url: recipeUrl,
         id: newRecipeId,
+        thumbnailUrl: getThumbnailUrlByVideoId(videoId),
       };
 
       // 5. AI 레시피 생성 요청

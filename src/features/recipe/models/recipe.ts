@@ -10,6 +10,7 @@ export interface Recipe {
   tags: string[];
   createdAt: Date;
   author: string;
+  thumbnailUrl?: string;
 }
 
 export interface RecipeFromAI {
@@ -18,17 +19,19 @@ export interface RecipeFromAI {
   ingredients: Ingredient[];
   steps: Step[];
   tips: string[] | null;
+  thumbnailUrl?: string;
 }
 
 export interface RecipeInput {
   script: string;
   url: string;
   id: string;
+  thumbnailUrl?: string;
 }
 
 export type RecipePreview = Pick<
   Recipe,
-  "id" | "title" | "description" | "tags" | "url"
+  "id" | "title" | "description" | "tags" | "url" | "thumbnailUrl"
 >;
 
 export interface Ingredient {

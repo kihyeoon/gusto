@@ -4,8 +4,8 @@ import { getQueryParam } from "@/libs/utils";
 
 export const getVideoId = (url: string) => {
   try {
-    if (!url || typeof url !== 'string') return null;
-    
+    if (!url || typeof url !== "string") return null;
+
     const urlObj = new URL(url);
     const domain = urlObj.hostname;
     const paths = urlObj.pathname.split("/");
@@ -32,8 +32,11 @@ export const getVideoId = (url: string) => {
 export function getThumbnailUrl(url: string): string {
   const videoId = getVideoId(url);
   if (!videoId) return "";
-  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  return getThumbnailUrlByVideoId(videoId);
 }
+
+export const getThumbnailUrlByVideoId = (videoId: string): string =>
+  `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
 export const buildYouTubeApiUrl = (
   query: string,
