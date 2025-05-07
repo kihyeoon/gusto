@@ -38,6 +38,12 @@ export default {
       type: 'url',
     },
     {
+      name: 'thumbnailUrl',
+      title: 'Thumbnail URL',
+      type: 'url',
+      description: '레시피 썸네일 이미지의 S3 URL',
+    },
+    {
       name: 'ingredients',
       title: 'Ingredients',
       type: 'array',

@@ -56,3 +56,30 @@ export const patch = <T>(...args: Parameters<typeof instance.patch>) => {
 export const del = <T>(...args: Parameters<typeof instance.delete>) => {
   return instance.delete<T, T>(...args);
 };
+
+/**
+ * fetch API 래퍼 함수: HTTP 에러 시 ApiException throw
+ */
+export const fetchWithApiException = async (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+): Promise<Response> => {
+  const response = await fetch(input, init);
+
+  if (!response.ok) {
+    let errorData: ApiErrorSchema = {
+      message: `API 요청 실패: ${response.status} ${response.statusText}`,
+    };
+    try {
+      const responseBody = await response.json();
+      if (responseBody && typeof responseBody.message === "string") {
+        errorData = responseBody as ApiErrorSchema;
+      }
+    } catch (e) {
+      console.error("Failed to parse error response body:", e);
+    }
+    throw new ApiException(errorData, response.status);
+  }
+
+  return response;
+};

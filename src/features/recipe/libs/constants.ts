@@ -19,6 +19,10 @@ export const errorMessages = {
     message: "추천 레시피를 가져오는 데 실패했습니다.",
     description: "다시 시도해주세요.",
   },
+  NOT_A_RECIPE: {
+    message: "요리 레시피 영상이 아닙니다.",
+    description: "요리 레시피가 포함된 영상의 URL을 입력해주세요.",
+  },
 } as const;
 
 export const deleteRecipePrompt = {

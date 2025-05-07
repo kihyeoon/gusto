@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { deleteRecipePrompt } from "@/features/recipe/libs/constants";
-import { getVideoId } from "@/features/recipe/libs/utils";
+import { getThumbnailUrl, getVideoId } from "@/features/recipe/libs/utils";
 import { RecipePreview } from "@/features/recipe/models/recipe";
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const RecipeListItem = ({
-  recipe: { id, title, tags, url },
+  recipe: { id, title, tags, url, thumbnailUrl },
   index,
   isTouchDevice,
   deleteRecipe,
@@ -30,8 +30,10 @@ export const RecipeListItem = ({
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  const youtubeThumnail = thumbnailUrl || getThumbnailUrl(url || "");
+
   const { imgSrc, handleImageError } = useImgSrc({
-    url: url && `https://img.youtube.com/vi/${getVideoId(url)}/mqdefault.jpg`,
+    url: youtubeThumnail,
     fallbackImg: "/images/placeholder.png",
   });
 
@@ -55,7 +57,7 @@ export const RecipeListItem = ({
           onClick={() => navigateToRecipe(id)}
         >
           <div className="w-5 text-center font-semibold">{index + 1}</div>
-          {url ? (
+          {thumbnailUrl || url ? (
             <Image
               className="aspect-square rounded-full border border-primary object-cover"
               src={imgSrc}

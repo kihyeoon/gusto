@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import useImgSrc from "@/features/recipe/hooks/use-img-src";
-import { getVideoId } from "@/features/recipe/libs/utils";
+import { getThumbnailUrl } from "@/features/recipe/libs/utils";
 import { Recipe } from "@/features/recipe/models/recipe";
 
 interface Props {
@@ -16,8 +16,7 @@ export default function RecipeView({
   recipe: { title, url, description, ingredients, steps, tips },
 }: Props) {
   const { imgSrc, handleImageError } = useImgSrc({
-    url:
-      url && `https://img.youtube.com/vi/${getVideoId(url)}/maxresdefault.jpg`,
+    url: getThumbnailUrl(url || ""),
     fallbackImg: "/images/placeholder.png",
   });
 

@@ -33,6 +33,7 @@ const recipePreviewProjection = groq`
   "description": description,
   "tags": tags[]->title,
   "url": url,
+  "thumbnailUrl": thumbnailUrl,
 `;
 
 export async function getAllRecipes() {
@@ -70,7 +71,7 @@ export async function createRecipe(
   userId: string,
   customId?: string,
 ) {
-  const { ingredients, steps } = recipe;
+  const { ingredients, steps, thumbnailUrl } = recipe;
 
   // 1. 재료 데이터 생성 (중복 체크)
   const createdIngredients = await Promise.all(
@@ -107,6 +108,7 @@ export async function createRecipe(
     })),
     tags: [],
     url,
+    thumbnailUrl,
     author: {
       _type: "reference",
       _ref: userId,

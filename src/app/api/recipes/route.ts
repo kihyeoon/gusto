@@ -1,11 +1,16 @@
 import { openai } from "@ai-sdk/openai";
-import { streamObject } from "ai";
+import { generateObject, streamObject } from "ai";
 import { NextRequest, NextResponse } from "next/server";
+
+import { uploadImageToS3 } from "@/services/s3-service";
 
 import { auth } from "@/features/auth/services/auth";
 import { withSessionUser } from "@/features/auth/services/session";
 import { recipePrompt } from "@/features/recipe/libs/ai/prompt";
-import { recipeSchema } from "@/features/recipe/libs/ai/schemas";
+import {
+  isRecipeSchema,
+  recipeSchema,
+} from "@/features/recipe/libs/ai/schemas";
 import { errorMessages } from "@/features/recipe/libs/constants";
 import { RecipeFromAI, RecipeInput } from "@/features/recipe/models/recipe";
 import { getRecipesOf, updateRecipe } from "@/features/recipe/services/recipe";
@@ -33,7 +38,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { script, url, id }: RecipeInput = await req.json();
+  const { script, url, id, thumbnailUrl }: RecipeInput = await req.json();
 
   const session = await auth();
   const userId = session?.user.id;
@@ -46,14 +51,40 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    let s3ThumbnailUrl: string | undefined;
+
+    if (thumbnailUrl) {
+      try {
+        s3ThumbnailUrl = await uploadImageToS3(thumbnailUrl, id);
+      } catch (error) {
+        console.error("썸네일 업로드 실패:", error);
+      }
+    }
+
+    const { object: recipeCheck } = await generateObject({
+      model: openai("gpt-4.1-nano"),
+      schema: isRecipeSchema,
+      prompt: `다음 스크립트가 요리 레시피에 관한 내용인지 판단해주세요: ${script}`,
+      temperature: 0,
+    });
+
+    if (!recipeCheck.isRecipe) {
+      return NextResponse.json<ApiErrorSchema>(
+        {
+          message: errorMessages.NOT_A_RECIPE.message,
+          description: errorMessages.NOT_A_RECIPE.description,
+        },
+        { status: 422 }, // Unprocessable Content
+      );
+    }
+
     const result = streamObject({
-      model: openai("gpt-4o"),
+      model: openai("gpt-4.1"),
       schema: recipeSchema,
       system: recipePrompt,
       prompt: script,
       onFinish: async (completion) => {
         try {
-          // 완전한 레시피 객체로 DB에 저장
           if (completion.object) {
             const recipeFromAI: RecipeFromAI = {
               title: completion.object.title,
@@ -61,6 +92,7 @@ export async function POST(req: NextRequest) {
               ingredients: completion.object.ingredients,
               steps: completion.object.steps,
               tips: completion.object.tips,
+              thumbnailUrl: s3ThumbnailUrl || thumbnailUrl,
             };
             await createRecipe(recipeFromAI, url, userId, id);
           }
@@ -70,7 +102,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 클라이언트에 스트리밍 텍스트 응답 반환
     return result.toTextStreamResponse();
   } catch (error) {
     return NextResponse.json<ApiErrorSchema>(

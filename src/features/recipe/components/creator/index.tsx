@@ -35,8 +35,8 @@ export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
   useEffect(() => {
     if (error) {
       toast({
-        title: "레시피 생성 오류",
-        description: error,
+        title: error.message || "레시피 생성 오류",
+        description: error.description,
         variant: "destructive",
       });
     }
@@ -44,8 +44,12 @@ export default function RecipeCreator({ initialRecipe }: RecipeCreatorProps) {
 
   const initialUrl = initialRecipe?.url || "";
 
+  const thumbnailUrl =
+    initialRecipe?.thumbnailUrl ||
+    (!!recipe && initialUrl ? getThumbnailUrl(initialUrl) : "");
+
   const { imgSrc, handleImageError } = useImgSrc({
-    url: !!recipe && initialUrl ? getThumbnailUrl(initialUrl) : "",
+    url: thumbnailUrl,
     fallbackImg: "/images/placeholder.png",
   });
 
