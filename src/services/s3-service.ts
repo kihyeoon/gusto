@@ -24,7 +24,8 @@ export async function uploadImageToS3(
       },
     });
 
-    const key = `recipes/${recipeId}/thumbnail.jpg`;
+    const timestamp = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "");
+    const key = `recipes/${recipeId}/thumbnail.${timestamp}.jpg`;
 
     await s3Client.send(
       new PutObjectCommand({
@@ -35,7 +36,7 @@ export async function uploadImageToS3(
       }),
     );
 
-    return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+    return `${process.env.AWS_GUSTO_CDN_URL}/${key}`;
   } catch (error) {
     console.error("S3 이미지 업로드 중 오류 발생:", error);
     throw error;

@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import { BlurFade } from "@/components/ui/blur-fade";
 
+import { cloudFrontLoader } from "@/libs/cloudfront-loader";
+
 interface RecipeDescriptionProps {
   description: string;
   url?: string;
@@ -34,6 +36,7 @@ const RecipeDescription = ({
             width={500}
             height={300}
             className="w-full rounded-lg"
+            loader={cloudFrontLoader}
           />
         </a>
       ) : (
@@ -52,6 +55,7 @@ const RecipeDescription = ({
               height={300}
               className="w-full rounded-lg"
               onError={handleImageError}
+              loader={cloudFrontLoader}
             />
           </a>
         )

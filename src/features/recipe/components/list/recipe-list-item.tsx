@@ -13,6 +13,8 @@ import { deleteRecipePrompt } from "@/features/recipe/libs/constants";
 import { getThumbnailUrl, getVideoId } from "@/features/recipe/libs/utils";
 import { RecipePreview } from "@/features/recipe/models/recipe";
 
+import { cloudFrontLoader } from "@/libs/cloudfront-loader";
+
 interface Props {
   recipe: RecipePreview;
   index: number;
@@ -65,6 +67,7 @@ export const RecipeListItem = ({
               width={48}
               height={48}
               onError={handleImageError}
+              loader={cloudFrontLoader}
             />
           ) : (
             <div className="size-12 rounded-full border border-primary bg-secondary" />
