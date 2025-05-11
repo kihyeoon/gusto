@@ -13,18 +13,7 @@ export const cloudFrontLoader = ({
   width: number;
   quality?: number;
 }) => {
-  const cdnURL = process.env.NEXT_PUBLIC_AWS_GUSTO_CDN_URL || "";
-  const imageQuality = quality || 75;
-  let queryParams = `width=${width}&quality=${imageQuality}`;
+  const queryParams = `width=${width}&quality=${quality || 75}`;
 
-  if (src.includes("amazonaws.com")) {
-    const s3Path = new URL(src).pathname;
-    return `${cdnURL}${s3Path}?${queryParams}`;
-  }
-
-  if (src.includes(cdnURL)) {
-    return `${src}?${queryParams}`;
-  }
-
-  return src;
+  return `${src}?${queryParams}`;
 };
