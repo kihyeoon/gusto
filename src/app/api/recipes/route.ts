@@ -106,8 +106,8 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return NextResponse.json<ApiErrorSchema>(
       {
-        message: errorMessages.CANNOT_CREAT_RECIPE.message,
-        description: errorMessages.CANNOT_CREAT_RECIPE.description,
+        message: errorMessages.CANNOT_CREATE_RECIPE.message,
+        description: errorMessages.CANNOT_CREATE_RECIPE.description,
       },
       { status: 500 },
     );

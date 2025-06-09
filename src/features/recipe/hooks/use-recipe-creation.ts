@@ -66,8 +66,8 @@ export function useRecipeCreation({
       setError({ message: err.message });
     } else {
       setError({
-        message: errorMessages.CANNOT_CREAT_RECIPE.message,
-        description: errorMessages.CANNOT_CREAT_RECIPE.description,
+        message: errorMessages.CANNOT_CREATE_RECIPE.message,
+        description: errorMessages.CANNOT_CREATE_RECIPE.description,
       });
     }
   };
