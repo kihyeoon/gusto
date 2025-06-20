@@ -8,6 +8,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import DeleteButton from "@/components/DeleteButton";
 import { Button } from "@/components/ui/button";
 
+import TextHighlight from "@/features/recipe/components/list/text-highlight";
 import useImgSrc from "@/features/recipe/hooks/use-img-src";
 import { deleteRecipePrompt } from "@/features/recipe/libs/constants";
 import { getThumbnailUrl, getVideoId } from "@/features/recipe/libs/utils";
@@ -21,6 +22,7 @@ interface Props {
   isTouchDevice: boolean;
   deleteRecipe: (id: string) => void;
   navigateToRecipe: (id: string) => void;
+  searchTerm?: string;
 }
 
 export const RecipeListItem = ({
@@ -29,6 +31,7 @@ export const RecipeListItem = ({
   isTouchDevice,
   deleteRecipe,
   navigateToRecipe,
+  searchTerm = "",
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -74,12 +77,12 @@ export const RecipeListItem = ({
           )}
           <div className="flex min-w-0 flex-1 flex-col">
             <h3 className="truncate text-lg font-semibold" aria-label={title}>
-              {title}
+              <TextHighlight text={title} searchTerm={searchTerm} />
             </h3>
             <div className="flex gap-1">
               {tags.map((tag) => (
                 <span key={tag} className="text-sm text-gray-500">
-                  {`#${tag}`}
+                  #<TextHighlight text={tag} searchTerm={searchTerm} />
                 </span>
               ))}
             </div>
