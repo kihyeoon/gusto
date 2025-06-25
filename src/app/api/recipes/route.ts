@@ -32,6 +32,25 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   return withSessionUser(async (user) => {
     const recipe = await req.json();
+    
+    // 기존 레시피 조회 및 작성자 확인
+    const { getRecipeById } = await import("@/features/recipe/services/recipe");
+    const existingRecipe = await getRecipeById(recipe.id);
+    
+    if (!existingRecipe) {
+      return NextResponse.json(
+        { message: "레시피를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+    
+    if (existingRecipe.author !== user.email) {
+      return NextResponse.json(
+        { message: "레시피를 수정할 권한이 없습니다." },
+        { status: 403 }
+      );
+    }
+    
     const updatedRecipe = await updateRecipe(recipe);
     return NextResponse.json(updatedRecipe);
   });

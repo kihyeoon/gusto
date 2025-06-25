@@ -13,6 +13,7 @@ interface RecipeResultProps {
   getThumbnailUrl: (url: string) => string;
   imgSrc: string;
   handleImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
+  onEditClick?: () => void;
 }
 
 const RecipeResult = ({
@@ -24,6 +25,7 @@ const RecipeResult = ({
   getThumbnailUrl,
   imgSrc,
   handleImageError,
+  onEditClick,
 }: RecipeResultProps) => {
   if (!recipe) return null;
 
@@ -33,6 +35,7 @@ const RecipeResult = ({
         title={recipe.title}
         isGenerating={isGenerating}
         onStop={stop}
+        onEditClick={onEditClick}
       />
 
       <div className="space-y-6">
