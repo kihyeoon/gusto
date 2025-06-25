@@ -168,7 +168,7 @@ export async function updateRecipe(recipeData: Recipe) {
   );
 
   try {
-    const updatedRecipe = await client
+    await client
       .patch(id)
       .set({
         title,
@@ -183,7 +183,7 @@ export async function updateRecipe(recipeData: Recipe) {
       })
       .commit({ autoGenerateArrayKeys: true });
 
-    return updatedRecipe;
+    return await getRecipeById(id);
   } catch (error) {
     console.error("Error updating recipe:", error);
     throw error;
