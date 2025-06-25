@@ -12,9 +12,14 @@ import { RecipePreview } from "@/features/recipe/models/recipe";
 interface Props {
   recipes: RecipePreview[];
   deleteRecipe: (id: string) => void;
+  searchTerm?: string;
 }
 
-export default function RecipeList({ recipes, deleteRecipe }: Props) {
+export default function RecipeList({
+  recipes,
+  deleteRecipe,
+  searchTerm = "",
+}: Props) {
   const router = useRouter();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -38,6 +43,7 @@ export default function RecipeList({ recipes, deleteRecipe }: Props) {
               isTouchDevice={isTouchDevice}
               deleteRecipe={deleteRecipe}
               navigateToRecipe={navigateToRecipe}
+              searchTerm={searchTerm}
             />
           </ListItemMotion>
         </BlurFade>

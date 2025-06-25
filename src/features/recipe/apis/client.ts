@@ -3,7 +3,7 @@ import { getVideoId } from "@/features/recipe/libs/utils";
 import { Recipe, RecipePreview } from "@/features/recipe/models/recipe";
 import { YouTubeVideo } from "@/features/recipe/models/youtube";
 
-import { del, get, post } from "@/libs/api";
+import { del, get, post, put } from "@/libs/api";
 import { ApiException } from "@/libs/exceptions";
 
 export const getRecipes = async () => {
@@ -26,6 +26,10 @@ export const createRecipe = async (
   });
 
   return recipe;
+};
+
+export const updateRecipe = async (recipe: Recipe): Promise<Recipe> => {
+  return await put<Recipe>("/api/recipes", recipe);
 };
 
 export const deleteRecipe = async (id: string) => {
